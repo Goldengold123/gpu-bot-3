@@ -75,7 +75,9 @@ async def spam_ping(ctx, user_id, num: int):
 @bot.command(name='troll_spam_ping', help='A crucial tactic part of defeating America and Trump')
 @commands.has_role('BC')
 async def troll_spam_ping(ctx, user_id, message):
-    while True:
+    if user_id == '428295738011680769':
+        await ctx.send("Haha I'm immune!")
+    else:
         await ctx.send(f"<@" + user_id + "> " + " " + message)
         await asyncio.sleep(1)
 
