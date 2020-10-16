@@ -1,7 +1,7 @@
 import asyncio
 import random
 import string
-import enchant 
+# import enchant
 import discord
 import os
 
@@ -247,7 +247,8 @@ async def hangman(ctx):
     channel = msg1.channel
     await ctx.send('Word Chooser, DM me your secret word.')
     alphabet = list(string.ascii_lowercase)
-    enUS = enchant.Dict('en_US')
+    enUS = ['hello', 'apple']
+    # enUS = enchant.Dict('en_US')
 
     def checkWordChooser(m):
         wordList = list(m.content)
