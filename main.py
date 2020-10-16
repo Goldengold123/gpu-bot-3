@@ -75,8 +75,9 @@ async def troll_spam_ping(ctx, user_id, message):
     if user_id == '428295738011680769':
         await ctx.send("Haha I'm immune!")
     else:
-        await ctx.send(f"<@" + user_id + "> " + " " + message)
-        await asyncio.sleep(1)
+        while True:
+            await ctx.send(f"<@" + user_id + "> " + " " + message)
+            await asyncio.sleep(1)
 
 
 # Latency
