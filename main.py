@@ -376,4 +376,17 @@ async def hangman(ctx):
                        + '\n' + 'The word chooser has won! The word was ' + word.content + '.')
 
 
+# Minesweeper
+
+@bot.command(name='minesweeper', help='numbers, poo=empty, bomb=mine')
+async def minesweeper(ctx):
+    await ctx.send("""||:poop:||||:poop:||||:one:||||:two:||||:bomb:||||:one:||||:one:||||:one:||||:one:||
+||:poop:||||:poop:||||:one:||||:bomb:||||:two:||||:one:||||:one:||||:bomb:||||:one:||
+||:poop:||||:poop:||||:one:||||:one:||||:one:||||:poop:||||:one:||||:one:||||:one:||
+||:one:||||:one:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||
+||:bomb:||||:one:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||
+||:two:||||:two:||||:poop:||||:one:||||:one:||||:one:||||:one:||||:one:||||:one:||
+||:bomb:||||:one:||||:poop:||||:one:||||:bomb:||||:one:||||:one:||||:bomb:||||:two:||
+||:one:||||:one:||||:one:||||:two:||||:two:||||:one:||||:one:||||:three:||||:bomb:||
+||:poop:||||:poop:||||:one:||||:bomb:||||:one:||||:poop:||||:poop:||||:two:||||:bomb:||""")
 bot.run(TOKEN)
