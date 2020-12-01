@@ -15,6 +15,7 @@ if os.environ.get("DISCORD_BOT_TOKEN"):
 else:
     from credentials import TOKEN
 
+
 # Connecting to Discord
 
 @bot.event
@@ -99,8 +100,15 @@ async def stop(ctx):
 # Repeat
 
 @bot.command(name='repeat', help='repeats user')
-async def repeat(ctx, *, msg):
-    await ctx.send(msg)
+async def repeat(ctx, msg, count):
+    if count == 'inf':
+        while True:
+            await ctx.send(msg)
+            await asyncio.sleep(1)
+    else:
+        for i in range(int(count)):
+            await ctx.send(msg)
+            await asyncio.sleep(1)
 
 
 # Uppercase
@@ -117,6 +125,16 @@ async def uppercase(ctx, *, msg):
 async def lowercase(ctx, *, msg):
     lower = msg.lower()
     await ctx.send(lower)
+
+
+# Minecraft Server Renew Ping
+
+@bot.command(name='renew', help='pings ppl lol')
+@commands.has_role('MC Admin')
+async def renew(ctx):
+    while True:
+        await ctx.send(f"<@" + '428295738011680769' + "> " + f"<@" + '322493122598797323' + "> ")
+        await asyncio.sleep(3000)
 
 
 # Number Game
@@ -251,6 +269,7 @@ async def hangman(ctx):
     await ctx.send('Word Chooser, DM me your secret word.')
     alphabet = list(string.ascii_lowercase)
     enUS = ['hello', 'apple']
+
     # enUS = enchant.Dict('en_US')
 
     def checkWordChooser(m):
@@ -389,4 +408,6 @@ async def minesweeper(ctx):
 ||:bomb:||||:one:||||:poop:||||:one:||||:bomb:||||:one:||||:one:||||:bomb:||||:two:||
 ||:one:||||:one:||||:one:||||:two:||||:two:||||:one:||||:one:||||:three:||||:bomb:||
 ||:poop:||||:poop:||||:one:||||:bomb:||||:one:||||:poop:||||:poop:||||:two:||||:bomb:||""")
+
+
 bot.run(TOKEN)
