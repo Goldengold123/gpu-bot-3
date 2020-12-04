@@ -133,7 +133,8 @@ async def lowercase(ctx, *, msg):
 @commands.has_role('MC Admin')
 async def renew(ctx):
     while True:
-        await ctx.send(f"<@" + '428295738011680769' + "> " + f"<@" + '322493122598797323' + "> ")
+        await ctx.send(f"<@428295738011680769> <@322493122598797323> <@397105296327049216> <@447929605110628363> "
+                       f"<@447929605110628363> <@296369401027100674> ")
         await asyncio.sleep(3000)
 
 
