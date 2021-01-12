@@ -58,7 +58,6 @@ async def divide(self, a: Decimal, b: Decimal):
 # Spam Ping
 
 @bot.command(name='spam_ping', help='Spam Ping')
-@commands.has_role('Premier of BC')
 async def spam_ping(ctx, user_id, num: int):
     if ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323:
         count = 0
