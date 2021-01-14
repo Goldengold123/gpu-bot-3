@@ -1,7 +1,8 @@
 import asyncio
 import random
 import string
-# import enchant
+import enchant
+import minesweeper
 import discord
 import os
 
@@ -66,12 +67,13 @@ async def spam_ping(ctx, user_id, num: int):
             await ctx.send("Ping " + str(count) + ": " + f"<@" + user_id + "> ")
             await asyncio.sleep(1)
         await ctx.send("Pinged " + str(count) + " times.")
+    else:
+        await ctx.send("You really think I gave random people access to this?")
 
 
 # Troll Spam Ping
 
 @bot.command(name='troll_spam_ping', help='A crucial tactic part of defeating America and Trump')
-@commands.has_role('BC')
 async def troll_spam_ping(ctx, user_id, message):
     if user_id == '428295738011680769':
         await ctx.send("Haha I'm immune!")
@@ -85,23 +87,24 @@ async def troll_spam_ping(ctx, user_id, message):
 
 @bot.command(name='ping', help='pong')
 async def ping(ctx):
-    await ctx.send('Pong! {0}'.format(round(bot.latency, 1)))
+    await ctx.send('Pong! {0}'.format(bot.latency))
 
 
 # Stop
 
 @bot.command(name='stop', help='stops the bot')
-@commands.has_role('Premier of BC')
 async def stop(ctx):
-    await ctx.send('Stopping...')
-    await ctx.bot.logout()
+    if ctx.author.id == 428295738011680769:
+        await ctx.send('Stopping...')
+        await ctx.bot.logout()
 
 
 # Repeat
 
 @bot.command(name='repeat', help='repeats user')
 async def repeat(ctx, msg, count):
-    if count == 'inf':
+    if count == 'inf' and (
+            ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323):
         while True:
             await ctx.send(msg)
             await asyncio.sleep(1)
@@ -129,12 +132,11 @@ async def lowercase(ctx, *, msg):
 
 # Minecraft Server Renew Ping
 
-@bot.command(name='renew', help='pings ppl lol')
+@bot.command(name='renew', help='pings ppl lol (for renewing minecraft server)')
 @commands.has_role('MC Admin')
 async def renew(ctx):
     while True:
-        await ctx.send(f"<@428295738011680769> <@322493122598797323> <@397105296327049216> <@447929605110628363> "
-                       f"<@447929605110628363> <@296369401027100674> ")
+        await ctx.send(f"<@&783718101559935077>")
         await asyncio.sleep(3000)
 
 
@@ -269,9 +271,7 @@ async def hangman(ctx):
     channel = msg1.channel
     await ctx.send('Word Chooser, DM me your secret word.')
     alphabet = list(string.ascii_lowercase)
-    enUS = ['hello', 'apple']
-
-    # enUS = enchant.Dict('en_US')
+    enUS = enchant.Dict('en_US')
 
     def checkWordChooser(m):
         wordList = list(m.content)
@@ -396,10 +396,10 @@ async def hangman(ctx):
                        + '\n' + 'The word chooser has won! The word was ' + word.content + '.')
 
 
-# Minesweeper
+# MinesweeperTEST
 
-@bot.command(name='minesweeper', help='numbers, poo=empty, bomb=mine')
-async def minesweeper(ctx):
+@bot.command(name='minesweeperTEST', help='numbers, poo=empty, bomb=mine')
+async def minesweeperTEST(ctx):
     await ctx.send("""||:poop:||||:poop:||||:one:||||:two:||||:bomb:||||:one:||||:one:||||:one:||||:one:||
 ||:poop:||||:poop:||||:one:||||:bomb:||||:two:||||:one:||||:one:||||:bomb:||||:one:||
 ||:poop:||||:poop:||||:one:||||:one:||||:one:||||:poop:||||:one:||||:one:||||:one:||
@@ -409,6 +409,42 @@ async def minesweeper(ctx):
 ||:bomb:||||:one:||||:poop:||||:one:||||:bomb:||||:one:||||:one:||||:bomb:||||:two:||
 ||:one:||||:one:||||:one:||||:two:||||:two:||||:one:||||:one:||||:three:||||:bomb:||
 ||:poop:||||:poop:||||:one:||||:bomb:||||:one:||||:poop:||||:poop:||||:two:||||:bomb:||""")
+
+
+# Minesweeper
+@bot.command(name='minesweeper', help='numbers, poo=empty, bomb=mine')
+async def minesweeperGrid(ctx, myRows: int, myColumns: int, myMines: int):
+    if myRows <= 0:
+        await ctx.send("WARNING! Row count must be at least 1...setting to default 10.")
+        myRows = 10
+    if myColumns <= 0:
+        await ctx.send("WARNING! Mine count must be at least 1...setting to default 10.")
+        myColumns = 10
+    if myMines <= 0:
+        await ctx.send("WARNING! Mine count must be at least 1...setting to default 10.")
+        myMines = 10
+    cols = myColumns
+    rows = myRows
+    generator = minesweeper.Generator(cols, rows)
+    mines = myMines
+    grid = generator.generate_raw(mines)
+    minesweeperDict = {
+        "M": "||:bomb:||",
+        " ": "||:poop:||",
+        "1": "||:one:||",
+        "2": "||:two:||",
+        "3": "||:three:||",
+        "4": "||:four:||",
+        "5": "||:five:||",
+        "6": "||:six:||",
+        "7": "||:seven:||",
+        "8": "||:eight:||",
+    }
+    printThingy = """"""
+    for item in grid:
+        for item2 in item:
+            printThingy += minesweeperDict[item2]
+        minesweeperDict += "\n"
 
 
 bot.run(TOKEN)

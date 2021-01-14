@@ -1,1 +1,6 @@
 discord.py
+
+pyenchant~=3.1.1
+discord~=1.0.1
+credentials~=1.1
+minesweeper~=0.1.4
