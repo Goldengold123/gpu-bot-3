@@ -144,7 +144,7 @@ async def renew(ctx):
 
 # Number Game
 
-@bot.command(name='playNumberGuessing', help='Guess an integer between a and b.')
+@bot.command(name='playNumberGuessing', help='GAME: Guess an integer between a and b.')
 async def playNumberGuessing(ctx, a: int, b: int):
     num = random.randint(a, b)
     count = 0
@@ -170,7 +170,7 @@ async def playNumberGuessing(ctx, a: int, b: int):
 
 # Tic Tac Toe
 
-@bot.command(name='playTicTacToe', help='Tic Tac Toe for 2 players.')
+@bot.command(name='playTicTacToe', help='GAME: Tic Tac Toe for 2 players.')
 async def playTicTacToe(ctx):
     await ctx.send('Player 1 please send a message.')
     msg1 = await bot.wait_for('message')
@@ -265,7 +265,7 @@ async def playTicTacToe(ctx):
 
 # Hangman
 
-@bot.command(name='playHangman', help='hangman game, uses en_US dictionary')
+@bot.command(name='playHangman', help='GAME: hangman, uses en_US dictionary')
 async def playHangman(ctx):
     await ctx.send('Word Chooser, please send a message.')
     msg1 = await bot.wait_for('message')
@@ -398,7 +398,7 @@ async def playHangman(ctx):
 
 
 # Minesweeper
-@bot.command(name='playMinesweeper', help='numbers, poo=empty, bomb=mine')
+@bot.command(name='playMinesweeper', help='GAME: minesweeper, numbers, poo=empty, bomb=mine')
 async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
     if myRows <= 0:
         await ctx.send("WARNING! Row count must be at least 1...setting to default 10.")
