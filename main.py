@@ -1,11 +1,13 @@
 import asyncio
 import random
 import string
-import enchant
+import nltk
 import minesweeper
 import discord
 import os
 
+nltk.download('words')
+from nltk.corpus import words
 from decimal import *
 from discord.ext import commands
 
@@ -271,7 +273,6 @@ async def playHangman(ctx):
     channel = msg1.channel
     await ctx.send('Word Chooser, DM me your secret word.')
     alphabet = list(string.ascii_lowercase)
-    enUS = enchant.Dict("en_US")
 
     def checkWordChooser(m):
         wordList = list(m.content)
@@ -282,7 +283,7 @@ async def playHangman(ctx):
             else:
                 tempW = False
                 break
-        tempE = enUS.check(m.content)
+        tempE = m.content in words.words()
         return m.author == boss and m.channel.type is discord.ChannelType.private and tempW and tempE
 
     word = await bot.wait_for('message', check=checkWordChooser)

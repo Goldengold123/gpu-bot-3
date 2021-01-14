@@ -1,4 +1,3 @@
 discord.py
 minesweeperPy
---no-binary pyenchant
-pyenchant
+nltk
