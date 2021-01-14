@@ -271,7 +271,8 @@ async def playHangman(ctx):
     msg1 = await bot.wait_for('message')
     boss = msg1.author
     channel = msg1.channel
-    await ctx.send('Word Chooser, DM me your secret word.')
+    await ctx.send('Word Chooser, DM me your secret word. Format: no spaces, all lowercase, only english characters. '
+                   '(message will be ignored if criteria is not met)')
     alphabet = list(string.ascii_lowercase)
 
     def checkWordChooser(m):
@@ -408,6 +409,8 @@ async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
     if myMines <= 0:
         await ctx.send("WARNING! Mine count must be at least 1...setting to default 10.")
         myMines = 10
+    await ctx.send("WARNING! Generation of Minesweeper Grid may be unfinished, as a result of Discord's character "
+                   "limit.")
     cols = myColumns
     rows = myRows
     generator = minesweeper.Generator(cols, rows)
