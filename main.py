@@ -142,8 +142,8 @@ async def renew(ctx):
 
 # Number Game
 
-@bot.command(name='numGame', help='Guess an integer between a and b.')
-async def numGame(ctx, a: int, b: int):
+@bot.command(name='playNumberGuessing', help='Guess an integer between a and b.')
+async def playNumberGuessing(ctx, a: int, b: int):
     num = random.randint(a, b)
     count = 0
     guess = 1.2
@@ -168,8 +168,8 @@ async def numGame(ctx, a: int, b: int):
 
 # Tic Tac Toe
 
-@bot.command(name='tictactoe', help='Tic Tac Toe for 2 players.')
-async def tictactoe(ctx):
+@bot.command(name='playTicTacToe', help='Tic Tac Toe for 2 players.')
+async def playTicTacToe(ctx):
     await ctx.send('Player 1 please send a message.')
     msg1 = await bot.wait_for('message')
     user1 = msg1.author
@@ -263,8 +263,8 @@ async def tictactoe(ctx):
 
 # Hangman
 
-@bot.command(name='hangman', help='hangman game, uses en_US dictionary')
-async def hangman(ctx):
+@bot.command(name='playHangman', help='hangman game, uses en_US dictionary')
+async def playHangman(ctx):
     await ctx.send('Word Chooser, please send a message.')
     msg1 = await bot.wait_for('message')
     boss = msg1.author
@@ -396,24 +396,9 @@ async def hangman(ctx):
                        + '\n' + 'The word chooser has won! The word was ' + word.content + '.')
 
 
-# MinesweeperTEST
-
-@bot.command(name='minesweeperTEST', help='numbers, poo=empty, bomb=mine')
-async def minesweeperTEST(ctx):
-    await ctx.send("""||:poop:||||:poop:||||:one:||||:two:||||:bomb:||||:one:||||:one:||||:one:||||:one:||
-||:poop:||||:poop:||||:one:||||:bomb:||||:two:||||:one:||||:one:||||:bomb:||||:one:||
-||:poop:||||:poop:||||:one:||||:one:||||:one:||||:poop:||||:one:||||:one:||||:one:||
-||:one:||||:one:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||
-||:bomb:||||:one:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||||:poop:||
-||:two:||||:two:||||:poop:||||:one:||||:one:||||:one:||||:one:||||:one:||||:one:||
-||:bomb:||||:one:||||:poop:||||:one:||||:bomb:||||:one:||||:one:||||:bomb:||||:two:||
-||:one:||||:one:||||:one:||||:two:||||:two:||||:one:||||:one:||||:three:||||:bomb:||
-||:poop:||||:poop:||||:one:||||:bomb:||||:one:||||:poop:||||:poop:||||:two:||||:bomb:||""")
-
-
 # Minesweeper
-@bot.command(name='minesweeperGrid', help='numbers, poo=empty, bomb=mine')
-async def minesweeperGrid(ctx, myRows: int, myColumns: int, myMines: int):
+@bot.command(name='playMinesweeper', help='numbers, poo=empty, bomb=mine')
+async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
     if myRows <= 0:
         await ctx.send("WARNING! Row count must be at least 1...setting to default 10.")
         myRows = 10
