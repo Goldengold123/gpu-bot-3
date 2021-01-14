@@ -1,6 +1,7 @@
 import asyncio
 import random
 import string
+import enchant
 import minesweeper
 import discord
 import os
@@ -270,6 +271,7 @@ async def playHangman(ctx):
     channel = msg1.channel
     await ctx.send('Word Chooser, DM me your secret word.')
     alphabet = list(string.ascii_lowercase)
+    enUS = enchant.Dict("en_US")
 
     def checkWordChooser(m):
         wordList = list(m.content)
@@ -280,11 +282,7 @@ async def playHangman(ctx):
             else:
                 tempW = False
                 break
-        tempE = False
-        f = open("1000words.txt", "r")
-        for line in f:
-            if m.content == line.lower():
-                tempE = True
+        tempE = enUS.check(m.content)
         return m.author == boss and m.channel.type is discord.ChannelType.private and tempW and tempE
 
     word = await bot.wait_for('message', check=checkWordChooser)
