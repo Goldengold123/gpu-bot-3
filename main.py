@@ -412,7 +412,7 @@ async def minesweeperTEST(ctx):
 
 
 # Minesweeper
-@bot.command(name='minesweeper', help='numbers, poo=empty, bomb=mine')
+@bot.command(name='minesweeperGrid', help='numbers, poo=empty, bomb=mine')
 async def minesweeperGrid(ctx, myRows: int, myColumns: int, myMines: int):
     if myRows <= 0:
         await ctx.send("WARNING! Row count must be at least 1...setting to default 10.")
@@ -444,7 +444,8 @@ async def minesweeperGrid(ctx, myRows: int, myColumns: int, myMines: int):
     for item in grid:
         for item2 in item:
             printThingy += minesweeperDict[item2]
-        minesweeperDict += "\n"
+        printThingy += "\n"
+    await ctx.send(printThingy)
 
 
 bot.run(TOKEN)
