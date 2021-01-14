@@ -28,8 +28,8 @@ async def on_ready():
 
 @bot.command(name='add', help='Adds 2 numbers.')
 async def add(self, a: Decimal, b: Decimal):
-    sum = float(str(a + b))
-    await self.send(sum)
+    mySum = float(str(a + b))
+    await self.send(mySum)
 
 
 # Subtraction
