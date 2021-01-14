@@ -283,7 +283,7 @@ async def playHangman(ctx):
             else:
                 tempW = False
                 break
-        tempE = m.content.lower() in words.words()
+        tempE = ((m.content).lower()) in words.words()
         return m.author == boss and m.channel.type is discord.ChannelType.private and tempW and tempE
 
     word = await bot.wait_for('message', check=checkWordChooser)
@@ -388,7 +388,6 @@ async def playHangman(ctx):
             wrong.append(guess.content)
 
     if lettersLeft <= 0:
-        print(1)
         await ctx.send(hangmanBoard[6 - lives] + '|   ' + ' '.join(blanks)
                        + '\n' + 'Congratulations! You guessed the word!')
     if lives <= 0:
