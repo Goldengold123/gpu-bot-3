@@ -1,5 +1,2 @@
-pyenchant~=3.1.1
-minesweeper~=0.1.4
-discord~=1.0.1
-credentials~=1.1
-numpy~=1.19.2
+discord.py
+pygame-minesweeper
