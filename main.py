@@ -283,7 +283,7 @@ async def playHangman(ctx):
             else:
                 tempW = False
                 break
-        tempE = m.content in words.words()
+        tempE = m.content.lower() in words.words()
         return m.author == boss and m.channel.type is discord.ChannelType.private and tempW and tempE
 
     word = await bot.wait_for('message', check=checkWordChooser)
