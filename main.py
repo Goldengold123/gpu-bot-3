@@ -273,7 +273,6 @@ async def playHangman(ctx):
     alphabet = list(string.ascii_lowercase)
     enUS = enchant.Dict('en_US')
 
-
     def checkWordChooser(m):
         wordList = list(m.content)
         tempW = False
