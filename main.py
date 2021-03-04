@@ -248,7 +248,7 @@ async def playTicTacToe(ctx):
                 await ctx.send('Congrats! Player 1 has won!' + '\n' + drawBoard())
                 break
             if draw(letters, filled):
-                await ctx.send('The 2 players have drew! HAHA, that means I win!' + '\n' + drawBoard())
+                await ctx.send('The 2 players have drawn! HAHA, that means I win!' + '\n' + drawBoard())
                 break
             await ctx.send(drawBoard() + '\n' + 'Player 2, send the letter of where you would like to go.')
 
