@@ -11,18 +11,28 @@ from nltk.corpus import words
 from decimal import *
 from discord.ext import commands
 
-help_command = commands.DefaultHelpCommand(
-    no_category='Commands'
-)
-
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'),
-                   description="GPU BOT",
-                   help_command= help_command)
+bot = commands.Bot(command_prefix='!')
+bot.remove_command("help")
 
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 else:
     from credentials import TOKEN
+
+
+# Help Command
+
+@bot.group(invoke_without_command=True)
+async def help(ctx):
+    helpList = discord.Embed(title="Help",
+                             description="Use !help <command> for more info on a command. You can also "
+                                         "use !help <category> for more info on a category.",
+                             color=ctx.author.color)
+    helpList.add_field(name="Bot", value="help,ping,stop")
+    helpList.add_field(name="Math", value="add,subtract,multiply,divide")
+    helpList.add_field(name="Games", value="playTicTacToe,playHangman,playMinesweeper,playNumberGuessingGame")
+    helpList.add_field(name="Miscellaneous", value="uppercase,lowercase,repeat,spamPing,trollSpamPing")
+    await ctx.send(embed=helpList)
 
 
 # Connecting to Discord
@@ -66,8 +76,8 @@ async def divide(self, a: Decimal, b: Decimal):
 
 # Spam Ping
 
-@bot.command(name='spam_ping', help='Spam Ping')
-async def spam_ping(ctx, user_id, num: int):
+@bot.command(name='spamPing', help='Spam Ping')
+async def spamPing(ctx, user_id, num: int):
     if ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323:
         count = 0
         while count < num:
@@ -81,8 +91,8 @@ async def spam_ping(ctx, user_id, num: int):
 
 # Troll Spam Ping
 
-@bot.command(name='troll_spam_ping', help='A crucial tactic part of defeating America and Trump')
-async def troll_spam_ping(ctx, user_id, message):
+@bot.command(name='trollSpamPing', help='A crucial tactic part of defeating America and Trump')
+async def trollSpamPing(ctx, user_id, message):
     if user_id == '428295738011680769':
         await ctx.send("Haha I'm immune!")
     else:
