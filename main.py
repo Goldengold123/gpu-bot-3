@@ -11,7 +11,13 @@ from nltk.corpus import words
 from decimal import *
 from discord.ext import commands
 
-bot = commands.Bot('!')
+help_command = commands.DefaultHelpCommand(
+    no_category='Commands'
+)
+
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'),
+                   description="GPU BOT",
+                   help_command= help_command)
 
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
@@ -204,7 +210,8 @@ async def playTicTacToe(ctx):
             middle = '⬛{0}⬛ | ⬛{1}⬛ | ⬛{2}⬛'.format(letters['D'], letters['E'], letters['F'])
             bottom = '⬛{0}⬛ | ⬛{1}⬛ | ⬛{2}⬛'.format(letters['G'], letters['H'], letters['I'])
             board = '{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n{8}\n{9}\n{10}'.format(mainLine, top, mainLine, horizontal,
-                                                                                    mainLine, middle, mainLine, horizontal,
+                                                                                    mainLine, middle, mainLine,
+                                                                                    horizontal,
                                                                                     mainLine, bottom, mainLine)
             return board
 
