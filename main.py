@@ -77,10 +77,12 @@ async def help(ctx, command: str):
         helpList = discord.Embed(title="Divide", description="Divides 2 numbers.", color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!divide [number] [number]")
     elif command == "playTicTacToe":
-        helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.", color=ctx.author.color)
+        helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.",
+                                 color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!playTicTacToe")
     elif command == "playHangman":
-        helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary", color=ctx.author.color)
+        helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary",
+                                 color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!playHangman")
     elif command == "playMinesweeper":
         helpList = discord.Embed(title="Minesweeper", description="GAME: Minesweeper | numbers: :one: :two: :three: "
@@ -88,13 +90,16 @@ async def help(ctx, command: str):
                                                                   "mine: :bomb:", color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!playMinesweeper [rows] [columns] [mines]")
     elif command == "playNumberGuessingGame":
-        helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.", color=ctx.author.color)
+        helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.",
+                                 color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!playNumberGuessingGame [a] [b]")
     elif command == "uppercase":
-        helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase", color=ctx.author.color)
+        helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase",
+                                 color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!uppercase [text]")
     elif command == "lowercase":
-        helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase", color=ctx.author.color)
+        helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase",
+                                 color=ctx.author.color)
         helpList.add_field(name="Syntax", value="!lowercase [text]")
     elif command == "repeat":
         helpList = discord.Embed(title="Repeat", description="Repeats a string some number of times; \"inf\" means "
@@ -508,51 +513,53 @@ async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
 
 rules = [
     """:octagonal_sign:
-    > **Warn/Mute/Kick/Ban System:**
+> **Warn/Mute/Kick/Ban System:**
     
-    All offenses result in a **Warn** to serve as a log
-    **Mutes** are issued on repeated or more serious offenses
-    **Kicks** are issued on repeated serious offenses
-    **Bans** are issued after repeated kicks
-    
-    The word of the Admins/Moderators is final""",
+All offenses result in a **Warn** to serve as a log
+**Mutes** are issued on repeated or more serious offenses
+**Kicks** are issued on repeated serious offenses
+**Bans** are issued after repeated kicks
+
+The word of the Admins/Moderators is final""",
     """:one:
-    > No racial slurs or offensive language in any channel
-    
-    Second instance and onward will result in a **Mute** of *one hour*""",
+> No racial slurs or offensive language in any channel
+
+Second instance and onward will result in a **Mute** of *one hour*""",
     """:two:
-    > No NSFW content outside of NSFW channels
-    Doing so will result in a **Mute** of *two hours*""",
+> No NSFW content outside of NSFW channels
+Doing so will result in a **Mute** of *two hours*""",
     """:three:
-    > No spamming
-    
-    Spamming in any channel (with the exception of #spam) will result in a **Mute** of *one hour*
-    Excessive Bot commands outside of Bot channels counts as spam
-    Unrelated images, videos, or large bodies of text will also count as spam
+> No spamming
 
-    Spamming offensive language or NSFW content will result in a **Kick** for *twenty-four hours*
+Spamming in any channel (with the exception of #spam) will result in a **Mute** of *one hour*
+Excessive Bot commands outside of Bot channels counts as spam
+Unrelated images, videos, or large bodies of text will also count as spam
 
-    Spam-pinging will result in a **Mute** of *24 hours*""",
+Spamming offensive language or NSFW content will result in a **Kick** for *twenty-four hours*
+
+Spam-pinging will result in a **Mute** of *24 hours*""",
     """:four:
-    > No TTS messages
-    
-    Second instance and onward will result in a **Mute** of *one hour*""",
+> No TTS messages
+
+Second instance and onward will result in a **Mute** of *one hour*""",
     """:five:
-    > No alternate accounts
-    
-    Unless you have a good reason, all alts will be kicked""",
+> No alternate accounts
+
+Unless you have a good reason, all alts will be kicked""",
     """:six:
-    > No bullying
-    
-    Unless the recipient makes it clear that they are ok with it-
-    
-    First instance will result in a **Mute** of *two hours*
-    Second instance will result in a **Mute** of *twenty-four hours*
-    Third instance and onward will result in a **Kick** of *twenty-four hours*"""
-    ]
+> No bullying
+
+Unless the recipient makes it clear that they are ok with it-
+
+First instance will result in a **Mute** of *two hours*
+Second instance will result in a **Mute** of *twenty-four hours*
+Third instance and onward will result in a **Kick** of *twenty-four hours*"""
+]
+
 
 @bot.command()
 async def rule(ctx, num: int):
-    await ctx.send(rules[int(num)-1])
+    await ctx.send(rules[int(num) - 1])
+
 
 bot.run(TOKEN)
