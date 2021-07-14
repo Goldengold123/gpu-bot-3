@@ -26,10 +26,26 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 
+# Latency
+
+@bot.command(name='ping', help='pong')
+async def ping(ctx):
+    await ctx.send('Pong! {0}'.format(bot.latency))
+
+
+# Stop
+
+@bot.command(name='stop', help='stops the bot')
+async def stop(ctx):
+    if ctx.author.id == 428295738011680769:
+        await ctx.send('Stopping...')
+        await ctx.bot.logout()
+
+
 # Help Command
 
 @bot.group(invoke_without_command=True)
-async def help(ctx, *, command=None):
+async def help(ctx, command: str):
     if command == None:
         helpList = discord.Embed(title="Help",
                                  description="Use !help <command> for more info on a command. You can also "
@@ -95,6 +111,7 @@ async def help(ctx, *, command=None):
         helpList = discord.Embed(title="Command Not Found", color=ctx.author.color)
     await ctx.send(embed=helpList)
 
+
 # Math
 
 
@@ -155,22 +172,6 @@ async def trollSpamPing(ctx, user_id, message):
         while True:
             await ctx.send(f"<@" + user_id + "> " + " " + message)
             await asyncio.sleep(1)
-
-
-# Latency
-
-@bot.command(name='ping', help='pong')
-async def ping(ctx):
-    await ctx.send('Pong! {0}'.format(bot.latency))
-
-
-# Stop
-
-@bot.command(name='stop', help='stops the bot')
-async def stop(ctx):
-    if ctx.author.id == 428295738011680769:
-        await ctx.send('Stopping...')
-        await ctx.bot.logout()
 
 
 # Repeat
@@ -464,6 +465,7 @@ async def playHangman(ctx):
 
 
 # Minesweeper
+
 @bot.command(name='playMinesweeper', help='GAME: minesweeper, numbers, poo=empty, bomb=mine')
 async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
     if myRows <= 0:
@@ -501,5 +503,49 @@ async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
         printThingy += "\n"
     await ctx.send(printThingy)
 
+
+# Rules
+
+rules = [
+    """:octagonal_sign: > **Warn/Mute/Kick/Ban System:**
+    
+    All offenses result in a **Warn** to serve as a log
+    **Mutes** are issued on repeated or more serious offenses
+    **Kicks** are issued on repeated serious offenses
+    **Bans** are issued after repeated kicks
+    
+    The word of the Admins/Moderators is final""",
+    """:one: > No racial slurs or offensive language in any channel
+    
+    Second instance and onward will result in a **Mute** of *one hour*""",
+    """:two: > No NSFW content outside of NSFW channels
+    Doing so will result in a **Mute** of *two hours*""",
+    """:three: > No spamming
+    
+    Spamming in any channel (with the exception of #spam) will result in a **Mute** of *one hour*
+    Excessive Bot commands outside of Bot channels counts as spam
+    Unrelated images, videos, or large bodies of text will also count as spam
+
+    Spamming offensive language or NSFW content will result in a **Kick** for *twenty-four hours*
+
+    Spam-pinging will result in a **Mute** of *24 hours*""",
+    """:four: > No TTS messages
+    
+    Second instance and onward will result in a **Mute** of *one hour*""",
+    """:five: > No alternate accounts
+    
+    Unless you have a good reason, all alts will be kicked""",
+    """:six: > No bullying
+    
+    Unless the recipient makes it clear that they are ok with it-
+    
+    First instance will result in a **Mute** of *two hours*
+    Second instance will result in a **Mute** of *twenty-four hours*
+    Third instance and onward will result in a **Kick** of *twenty-four hours*"""
+    ]
+
+@bot.command()
+async def rule(ctx, num: int):
+    await ctx.send(rules[int(num)-1])
 
 bot.run(TOKEN)
