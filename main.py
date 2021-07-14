@@ -11,143 +11,12 @@ from nltk.corpus import words
 from decimal import *
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='!')
-bot.remove_command("help")
+bot = commands.Bot(command_prefix='!', help_command=None)
 
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 else:
     from credentials import TOKEN
-
-
-# Help Command
-
-@bot.group(invoke_without_command=True)
-async def help(ctx):
-    helpList = discord.Embed(title="Help",
-                             description="Use !help <command> for more info on a command. You can also "
-                                         "use !help <category> for more info on a category.",
-                             color=ctx.author.color)
-    helpList.add_field(name="Bot", value="help, ping, stop")
-    helpList.add_field(name="Math", value="add, subtract, multiply, divide")
-    helpList.add_field(name="Games", value="playTicTacToe, playHangman, playMinesweeper, playNumberGuessingGame")
-    helpList.add_field(name="Miscellaneous", value="uppercase, lowercase, repeat, spamPing, trollSpamPing")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def help(ctx):
-    helpList = discord.Embed(title="Help", description="Prints help message", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!help")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def ping(ctx):
-    helpList = discord.Embed(title="Ping", description="Pong", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!ping")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def stop(ctx):
-    helpList = discord.Embed(title="Stop", description="Restarts", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!stop")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def add(ctx):
-    helpList = discord.Embed(title="Add", description="Adds 2 numbers.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!add [number] [number]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def subtract(ctx):
-    helpList = discord.Embed(title="Subtract", description="Subtracts 2 numbers.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!subtract [number] [number]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def multiply(ctx):
-    helpList = discord.Embed(title="Multiply", description="Multiplies 2 numbers.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!multiply [number] [number]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def divide(ctx):
-    helpList = discord.Embed(title="Divide", description="Divides 2 numbers.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!divide [number] [number]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def playTicTacToe(ctx):
-    helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!playTicTacToe")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def playHangman(ctx):
-    helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!playHangman")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def playMinesweeper(ctx):
-    helpList = discord.Embed(title="Minesweeper", description="GAME: Minesweeper | numbers: :one: :two: :three: "
-                                                              ":four: :five: :six: :seven: :eight:, empty: :poop:, "
-                                                              "mine: :bomb:", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!playMinesweeper [rows] [columns] [mines]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def playNumberGuessingGame(ctx):
-    helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!playNumberGuessingGame [a] [b]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def uppercase(ctx):
-    helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!uppercase [text]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def lowercase(ctx):
-    helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!lowercase [text]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def repeat(ctx):
-    helpList = discord.Embed(title="Repeat", description="Repeats a string some number of times; \"inf\" means until "
-                                                         "!stop is used", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!lowercase [text]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def spamPing(ctx):
-    helpList = discord.Embed(title="Spam Ping", description="Spam Pings a user", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!spamPing [userID] [count]")
-    await ctx.send(embed=helpList)
-
-
-@help.command()
-async def trollSpamPing(ctx):
-    helpList = discord.Embed(title="Troll Spam Ping", description="A crucial tactic part of defeating America and Trump", color=ctx.author.color)
-    helpList.add_field(name="Syntax", value="!trollSpamPing [userID] [message]")
-    await ctx.send(embed=helpList)
 
 
 # Connecting to Discord
@@ -156,6 +25,75 @@ async def trollSpamPing(ctx):
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
+
+# Help Command
+
+@bot.group(invoke_without_command=True)
+async def help(ctx, *, command=None):
+    if command == None:
+        helpList = discord.Embed(title="Help",
+                                 description="Use !help <command> for more info on a command. You can also "
+                                             "use !help <category> for more info on a category.",
+                                 color=ctx.author.color)
+        helpList.add_field(name="Bot", value="help, ping, stop")
+        helpList.add_field(name="Math", value="add, subtract, multiply, divide")
+        helpList.add_field(name="Games", value="playTicTacToe, playHangman, playMinesweeper, playNumberGuessingGame")
+        helpList.add_field(name="Miscellaneous", value="uppercase, lowercase, repeat, spamPing, trollSpamPing")
+    elif command == "help":
+        helpList = discord.Embed(title="Help", description="Prints help message", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!help")
+    elif command == "ping":
+        helpList = discord.Embed(title="Ping", description="Pong", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!ping")
+    elif command == "stop":
+        helpList = discord.Embed(title="Stop", description="Restarts", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!stop")
+    elif command == "add":
+        helpList = discord.Embed(title="Add", description="Adds 2 numbers.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!add [number] [number]")
+    elif command == "subtract":
+        helpList = discord.Embed(title="Subtract", description="Subtracts 2 numbers.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!subtract [number] [number]")
+    elif command == "multiply":
+        helpList = discord.Embed(title="Multiply", description="Multiplies 2 numbers.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!multiply [number] [number]")
+    elif command == "divide":
+        helpList = discord.Embed(title="Divide", description="Divides 2 numbers.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!divide [number] [number]")
+    elif command == "playTicTacToe":
+        helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!playTicTacToe")
+    elif command == "playHangman":
+        helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!playHangman")
+    elif command == "playMinesweeper":
+        helpList = discord.Embed(title="Minesweeper", description="GAME: Minesweeper | numbers: :one: :two: :three: "
+                                                                  ":four: :five: :six: :seven: :eight:, empty: :poop:, "
+                                                                  "mine: :bomb:", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!playMinesweeper [rows] [columns] [mines]")
+    elif command == "playNumberGuessingGame":
+        helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!playNumberGuessingGame [a] [b]")
+    elif command == "uppercase":
+        helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!uppercase [text]")
+    elif command == "lowercase":
+        helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!lowercase [text]")
+    elif command == "repeat":
+        helpList = discord.Embed(title="Repeat", description="Repeats a string some number of times; \"inf\" means "
+                                                             "until !stop is used", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!lowercase [text]")
+    elif command == "spamPing":
+        helpList = discord.Embed(title="Spam Ping", description="Spam Pings a user", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!spamPing [userID] [count]")
+    elif command == "trollSpamPing":
+        helpList = discord.Embed(title="Troll Spam Ping", description="A crucial tactic part of defeating America and "
+                                                                      "Trump", color=ctx.author.color)
+        helpList.add_field(name="Syntax", value="!trollSpamPing [userID] [message]")
+    else:
+        helpList = discord.Embed(title="Command Not Found", color=ctx.author.color)
+    await ctx.send(embed=helpList)
 
 # Math
 
