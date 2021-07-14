@@ -160,7 +160,7 @@
       <workItem from="1626222653619" duration="226000" />
       <workItem from="1626222890256" duration="5000" />
       <workItem from="1626222908672" duration="2899000" />
-      <workItem from="1626278708218" duration="490000" />
+      <workItem from="1626278708218" duration="2936000" />
     </task>
     <task id="LOCAL-00001" summary="Update">
       <created>1610481796986</created>
@@ -365,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626216530431</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Update">
+      <created>1626291526158</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1626291526158</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,6 +384,21 @@
         <entry key="MAIN">
           <value>
             <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>

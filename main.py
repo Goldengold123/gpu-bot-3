@@ -42,11 +42,122 @@ async def help(ctx):
     await ctx.send(embed=helpList)
 
 
+@help.command()
+async def ping(ctx):
+    helpList = discord.Embed(title="Ping", description="Pong", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!ping")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def stop(ctx):
+    helpList = discord.Embed(title="Stop", description="Restarts", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!stop")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def add(ctx):
+    helpList = discord.Embed(title="Add", description="Adds 2 numbers.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!add [number] [number]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def subtract(ctx):
+    helpList = discord.Embed(title="Subtract", description="Subtracts 2 numbers.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!subtract [number] [number]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def multiply(ctx):
+    helpList = discord.Embed(title="Multiply", description="Multiplies 2 numbers.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!multiply [number] [number]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def divide(ctx):
+    helpList = discord.Embed(title="Divide", description="Divides 2 numbers.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!divide [number] [number]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def playTicTacToe(ctx):
+    helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!playTicTacToe")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def playHangman(ctx):
+    helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!playHangman")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def playMinesweeper(ctx):
+    helpList = discord.Embed(title="Minesweeper", description="GAME: Minesweeper | numbers: :one: :two: :three: "
+                                                              ":four: :five: :six: :seven: :eight:, empty: :poop:, "
+                                                              "mine: :bomb:", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!playMinesweeper [rows] [columns] [mines]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def playNumberGuessingGame(ctx):
+    helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!playNumberGuessingGame [a] [b]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def uppercase(ctx):
+    helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!uppercase [text]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def lowercase(ctx):
+    helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!lowercase [text]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def repeat(ctx):
+    helpList = discord.Embed(title="Repeat", description="Repeats a string some number of times; \"inf\" means until "
+                                                         "!stop is used", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!lowercase [text]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def spamPing(ctx):
+    helpList = discord.Embed(title="Spam Ping", description="Spam Pings a user", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!spamPing [userID] [count]")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def trollSpamPing(ctx):
+    helpList = discord.Embed(title="Troll Spam Ping", description="A crucial tactic part of defeating America and Trump", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!trollSpamPing [userID] [message]")
+    await ctx.send(embed=helpList)
+
+
 # Connecting to Discord
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
+
+
+# Math
 
 
 # Addition
@@ -153,16 +264,6 @@ async def uppercase(ctx, *, msg):
 async def lowercase(ctx, *, msg):
     lower = msg.lower()
     await ctx.send(lower)
-
-
-# Minecraft Server Renew Ping
-
-@bot.command(name='renew', help='pings ppl lol (for renewing minecraft server)')
-@commands.has_role('MC Admin')
-async def renew(ctx):
-    while True:
-        await ctx.send(f"<@&783718101559935077>")
-        await asyncio.sleep(3000)
 
 
 # Number Game
