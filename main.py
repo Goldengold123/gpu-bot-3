@@ -28,10 +28,17 @@ async def help(ctx):
                              description="Use !help <command> for more info on a command. You can also "
                                          "use !help <category> for more info on a category.",
                              color=ctx.author.color)
-    helpList.add_field(name="Bot", value="help,ping,stop")
-    helpList.add_field(name="Math", value="add,subtract,multiply,divide")
-    helpList.add_field(name="Games", value="playTicTacToe,playHangman,playMinesweeper,playNumberGuessingGame")
-    helpList.add_field(name="Miscellaneous", value="uppercase,lowercase,repeat,spamPing,trollSpamPing")
+    helpList.add_field(name="Bot", value="help, ping, stop")
+    helpList.add_field(name="Math", value="add, subtract, multiply, divide")
+    helpList.add_field(name="Games", value="playTicTacToe, playHangman, playMinesweeper, playNumberGuessingGame")
+    helpList.add_field(name="Miscellaneous", value="uppercase, lowercase, repeat, spamPing, trollSpamPing")
+    await ctx.send(embed=helpList)
+
+
+@help.command()
+async def help(ctx):
+    helpList = discord.Embed(title="Help", description="Prints help message", color=ctx.author.color)
+    helpList.add_field(name="Syntax", value="!help")
     await ctx.send(embed=helpList)
 
 
