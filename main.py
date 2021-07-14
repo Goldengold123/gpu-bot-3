@@ -507,7 +507,8 @@ async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
 # Rules
 
 rules = [
-    """:octagonal_sign: > **Warn/Mute/Kick/Ban System:**
+    """:octagonal_sign:
+    > **Warn/Mute/Kick/Ban System:**
     
     All offenses result in a **Warn** to serve as a log
     **Mutes** are issued on repeated or more serious offenses
@@ -515,12 +516,15 @@ rules = [
     **Bans** are issued after repeated kicks
     
     The word of the Admins/Moderators is final""",
-    """:one: > No racial slurs or offensive language in any channel
+    """:one:
+    > No racial slurs or offensive language in any channel
     
     Second instance and onward will result in a **Mute** of *one hour*""",
-    """:two: > No NSFW content outside of NSFW channels
+    """:two:
+    > No NSFW content outside of NSFW channels
     Doing so will result in a **Mute** of *two hours*""",
-    """:three: > No spamming
+    """:three:
+    > No spamming
     
     Spamming in any channel (with the exception of #spam) will result in a **Mute** of *one hour*
     Excessive Bot commands outside of Bot channels counts as spam
@@ -529,13 +533,16 @@ rules = [
     Spamming offensive language or NSFW content will result in a **Kick** for *twenty-four hours*
 
     Spam-pinging will result in a **Mute** of *24 hours*""",
-    """:four: > No TTS messages
+    """:four:
+    > No TTS messages
     
     Second instance and onward will result in a **Mute** of *one hour*""",
-    """:five: > No alternate accounts
+    """:five:
+    > No alternate accounts
     
     Unless you have a good reason, all alts will be kicked""",
-    """:six: > No bullying
+    """:six:
+    > No bullying
     
     Unless the recipient makes it clear that they are ok with it-
     
