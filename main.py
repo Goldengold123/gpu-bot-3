@@ -154,6 +154,26 @@ async def divide(self, a: Decimal, b: Decimal):
     await self.send(quotient)
 
 
+# Dumdums
+@bot.command(name='addDumdum', help='Adds a dumdum!')
+async def addDumdum(ctx, user_id: int):
+    if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
+        dumdums.append(user_id)
+    else:
+        await ctx.send("you dont have perms to add a dumdum")
+
+
+@bot.command(name='removeDumdum', help='Removes a dumdum!')
+async def addDumdum(ctx, user_id: int):
+    if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
+        if user_id in dumdums:
+            dumdums.pop(user_id)
+        else:
+            await ctx.send(user_id, "is not a dumdum")
+    else:
+        await ctx.send("you dont have perms to remove a dumdum")
+
+
 # Spam Ping
 
 @bot.command(name='spamPing', help='Spam Ping')
