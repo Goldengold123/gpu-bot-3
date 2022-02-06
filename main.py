@@ -13,6 +13,8 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='!', help_command=None)
 
+dumdums = [397105296327049216]
+
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 else:
@@ -174,9 +176,12 @@ async def trollSpamPing(ctx, user_id, message):
     if user_id == '428295738011680769':
         await ctx.send("Haha I'm immune!")
     else:
-        while True:
-            await ctx.send(f"<@" + user_id + "> " + " " + message)
-            await asyncio.sleep(1)
+        if ctx.author.id in dumdums:
+            await ctx.send("no dumdums cant use this command")
+        else:
+            while True:
+                await ctx.send(f"<@" + user_id + "> " + " " + message)
+                await asyncio.sleep(1)
 
 
 # Repeat
@@ -189,9 +194,12 @@ async def repeat(ctx, msg, count):
             await ctx.send(msg)
             await asyncio.sleep(1)
     else:
-        for i in range(int(count)):
-            await ctx.send(msg)
-            await asyncio.sleep(1)
+        if ctx.author.id in dumdums:
+            await ctx.send("no dumdums cant use this command")
+        else:
+            for i in range(int(count)):
+                await ctx.send(msg)
+                await asyncio.sleep(1)
 
 
 # Uppercase
@@ -559,7 +567,7 @@ Third instance and onward will result in a **Kick** of *twenty-four hours*"""
 
 @bot.command()
 async def rule(ctx, num: int):
-    await ctx.send(rules[int(num) - 1])
+    await ctx.send(rules[int(num)])
 
 
 bot.run(TOKEN)
