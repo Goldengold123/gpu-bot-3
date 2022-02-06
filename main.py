@@ -13,7 +13,7 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='!', help_command=None)
 
-dumdums = [397105296327049216]
+dumdums = [397105296327049216, 296396903195607040]
 
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
@@ -159,15 +159,17 @@ async def divide(self, a: Decimal, b: Decimal):
 async def addDumdum(ctx, user_id: int):
     if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
         dumdums.append(user_id)
+        await ctx.send("Added dumdum", user_id)
     else:
         await ctx.send("you dont have perms to add a dumdum")
 
 
 @bot.command(name='removeDumdum', help='Removes a dumdum!')
-async def addDumdum(ctx, user_id: int):
+async def removeDumdum(ctx, user_id: int):
     if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
         if user_id in dumdums:
             dumdums.pop(user_id)
+            await ctx.send("Removed dumdum", user_id)
         else:
             await ctx.send(user_id, "is not a dumdum")
     else:
