@@ -175,7 +175,7 @@ async def stop(ctx):
 async def help(ctx):
     helpMainEmbed = discord.Embed(title="0️⃣ Commands",
                                   description="what",
-                                  colour=discord.Color.blue())
+                                  colour=discord.Color.red())
     createHelpMainEmbed(helpMainEmbed)
     message = await ctx.send(embed=helpMainEmbed)
     messageInformation[0] = message
@@ -199,25 +199,25 @@ async def on_reaction_add(reaction, user: discord.Member = None):
     if valid and reaction.emoji == '0️⃣':
         helpMainEmbed = discord.Embed(title="0️⃣ Commands",
                                       description="what",
-                                      colour=discord.Color.blue())
+                                      colour=discord.Color.red())
         createHelpMainEmbed(helpMainEmbed)
         await reaction.message.edit(embed=helpMainEmbed)
     if valid and reaction.emoji == '1️⃣':
         helpImportantEmbed = discord.Embed(title="1️⃣ Important Commands",
                                            description="Useful",
-                                           colour=discord.Color.blue())
+                                           colour=discord.Color.orange())
         createHelpImportantEmbed(helpImportantEmbed)
         await reaction.message.edit(embed=helpImportantEmbed)
     if valid and reaction.emoji == '2️⃣':
         helpMathEmbed = discord.Embed(title="2️⃣ Math Commands",
                                       description="Math",
-                                      colour=discord.Color.blue())
+                                      colour=discord.Color.gold())
         createHelpMathEmbed(helpMathEmbed)
         await reaction.message.edit(embed=helpMathEmbed)
     if valid and reaction.emoji == '3️⃣':
         helpGameEmbed = discord.Embed(title="3️⃣ Game Commands",
                                       description="Games",
-                                      colour=discord.Color.blue())
+                                      colour=discord.Color.green())
         createHelpGameEmbed(helpGameEmbed)
         await reaction.message.edit(embed=helpGameEmbed)
     if valid and reaction.emoji == '4️⃣':
@@ -229,7 +229,7 @@ async def on_reaction_add(reaction, user: discord.Member = None):
     if valid and reaction.emoji == '5️⃣':
         helpOtherEmbed = discord.Embed(title="5️⃣ Other Commands",
                                        description="Other",
-                                       colour=discord.Color.blue())
+                                       colour=discord.Color.purple())
         createHelpOtherEmbed(helpOtherEmbed)
         await reaction.message.edit(embed=helpOtherEmbed)
 
@@ -364,27 +364,32 @@ async def playNumberGuessing(ctx, a: int, b: int):
     count = 0
     guess = num + 1
     user = ctx.author
-    text = "Guess an integer between " + str(a) + " and " + str(b) + "."
-    msg = await ctx.send(text)
+    embed = discord.Embed(title="Number Guessing Game",
+                          description="Guess an integer between " + str(a) + " and " + str(b) + ".",
+                          colour=discord.Color.green())
+    msg = await ctx.send(embed=embed)
     while guess != num:
-        await msg.edit(content=text)
+        await msg.edit(embed=embed)
         userMessage = await bot.wait_for('message')
         guess = userMessage.content
         if user == userMessage.author:
             if not guess.isnumeric() or int(guess) < a or int(guess) > b:
-                text += "\n`" + guess + "`Invalid guess!"
+                embed.add_field(name=guess, value="Invalid guess!", inline=False)
             elif int(guess) > num:
                 count += 1
-                text += "\n`" + str(guess) + "` Too high!"
+                embed.add_field(name=guess, value="Too high!", inline=False)
             elif int(guess) < num:
                 count += 1
-                text += "\n`" + str(guess) + "` Too low!"
+                embed.add_field(name=guess, value="Too low!", inline=False)
             elif int(guess) == num:
                 count += 1
-                text += "\n`" + guess + "` You guessed the number in " + str(count) + " tries! Congrats! ||😡||"
+                embed.add_field(name=guess,
+                                value="You guessed the number in " + str(count) + " tries! Congrats! ||😡||",
+                                inline=False)
             else:
-                text += "\n`" + guess + "`Invalid guess!"
+                embed.add_field(name=guess, value="Invalid guess!", inline=False)
             await userMessage.delete()
+
 
 # Tic Tac Toe
 
