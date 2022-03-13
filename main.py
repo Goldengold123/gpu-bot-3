@@ -235,6 +235,7 @@ async def on_reaction_add(reaction, user: discord.Member = None):
 
     await reaction.message.remove_reaction(reaction.emoji, user)
 
+
 # Math
 # Addition
 @bot.command(aliases=['Add', 'sum', 'Sum'])
@@ -354,29 +355,36 @@ async def lowercase(ctx, *, msg):
 
 # Number Game
 
-@bot.command(aliases=['playnumberguessing', 'numberguessing', 'NumberGuessing', 'numberGuessing', 'numberguess',
-                      'NumberGuess', 'numberGuess', 'PlayNumberGuessing', 'playnumberguess', 'PlayNumberGuess',
-                      'playNumberGuess'])
+@bot.command(aliases=['playnumberguessing', 'PlayNumberGuessing',
+                      'playNumberGuess', 'playnumberguess', 'PlayNumberGuess',
+                      'numberguessing', 'NumberGuessing', 'numberGuessing',
+                      'numberguess', 'NumberGuess', 'numberGuess'])
 async def playNumberGuessing(ctx, a: int, b: int):
     num = random.randint(a, b)
     count = 0
-    guess = 1.2
+    guess = num + 1
     user = ctx.author
-    await ctx.send('Guess an integer between ' + str(a) + ' and ' + str(b) + '.')
+    text = "Guess an integer between " + str(a) + " and " + str(b) + "."
+    msg = await ctx.send(text)
     while guess != num:
-        guess = await bot.wait_for("message")
-        if user == guess.author:
-            if int(guess.content) > num:
-                await ctx.send('Too high!')
+        await msg.edit(content=text)
+        userMessage = await bot.wait_for('message')
+        guess = userMessage.content
+        if user == userMessage.author:
+            if not guess.isnumeric() or int(guess) < a or int(guess) > b:
+                text += "\n`" + guess + "`Invalid guess!"
+            elif int(guess) > num:
                 count += 1
-            elif int(guess.content) < num:
-                await ctx.send('Too low!')
+                text += "\n`" + str(guess) + "` Too high!"
+            elif int(guess) < num:
                 count += 1
-            elif int(guess.content) == num:
+                text += "\n`" + str(guess) + "` Too low!"
+            elif int(guess) == num:
                 count += 1
-                await ctx.send('You guessed the number in ' + str(count) + ' tries! Congrats! ||😡||')
-                break
-
+                text += "\n`" + guess + "` You guessed the number in " + str(count) + " tries! Congrats! ||😡||"
+            else:
+                text += "\n`" + guess + "`Invalid guess!"
+            await userMessage.delete()
 
 # Tic Tac Toe
 
