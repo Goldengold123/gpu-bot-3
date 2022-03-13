@@ -4,40 +4,166 @@ import string
 import nltk
 import minesweeper
 import discord
+from discord.ext import commands
 import os
 
 nltk.download('words')
 from nltk.corpus import words
 from decimal import *
-from discord.ext import commands
 
-bot = commands.Bot(command_prefix='!', help_command=None)
-
-dumdums = [397105296327049216, 296396903195607040]
-
+# Token
 if os.environ.get("DISCORD_BOT_TOKEN"):
     TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 else:
     from credentials import TOKEN
 
+# Command Prefix
+commandPrefix = '!'
+
+# Client
+intents = discord.Intents.default()
+intents.reactions = True
+bot = commands.Bot(command_prefix=commandPrefix, intents=intents)
+bot.remove_command("help")
+
+# Dumdums
+dumdums = [397105296327049216, 296396903195607040]
+
+# Variables
+messageInformation = [0, 0]
+
+
+def createHelpMainEmbed(embed):
+    embed.add_field(name=":one: Important",
+                    value="Important commands.",
+                    inline=False)
+
+    embed.add_field(name=":two: Math",
+                    value="Math commands.",
+                    inline=False)
+
+    embed.add_field(name=":three: Games",
+                    value="Game commands.",
+                    inline=False)
+
+    embed.add_field(name=":four: Funny",
+                    value="funny",
+                    inline=False)
+
+    embed.add_field(name=":five: Other",
+                    value="Miscellaneous commands.",
+                    inline=False)
+
+
+def createHelpImportantEmbed(embed):
+    embed.add_field(name="Help",
+                    value="`" + commandPrefix + "help` Helps you.",
+                    inline=False)
+
+    embed.add_field(name="Ping",
+                    value="`" + commandPrefix + "ping` Pong.",
+                    inline=False)
+
+    embed.add_field(name="Stop",
+                    value="`" + commandPrefix + "stop` Stops if you are 428295738011680769.",
+                    inline=False)
+
+
+def createHelpMathEmbed(embed):
+    embed.add_field(name="Add",
+                    value="`" + commandPrefix + "add [number1] [number2]`\nAdds 2 numbers.\nReturns `number1 + "
+                                                "number2`.",
+                    inline=False)
+
+    embed.add_field(name="Subtract",
+                    value="`" + commandPrefix + "subtract [number1] [number2]`\nSubtracts 2 numbers.\nReturns "
+                                                "`number1 - number2`.",
+                    inline=False)
+
+    embed.add_field(name="Multiply",
+                    value="`" + commandPrefix + "multiply [number1] [number2]`\nMultiplies 2 numbers.\nReturns "
+                                                "`number1 × number2`.",
+                    inline=False)
+
+    embed.add_field(name="Divide",
+                    value="`" + commandPrefix + "divide [number1] [number2]`\nDivides 2 numbers.\nReturns `number1 ÷ "
+                                                "number2`.",
+                    inline=False)
+
+    embed.add_field(name="Evaluate",
+                    value="`" + commandPrefix + "evaluate [expression]`\nEvaluates an expression.",
+                    inline=False)
+
+
+def createHelpGameEmbed(embed):
+    embed.add_field(name="Tic Tac Toe",
+                    value="`" + commandPrefix + "playTicTacToe`\nTic Tac Toe for 2 players.",
+                    inline=False)
+
+    embed.add_field(name="Hangman",
+                    value="`" + commandPrefix + "playHangman`\nHangman using an en_US dictionary.",
+                    inline=False)
+
+    embed.add_field(name="Minesweeper",
+                    value="`" + commandPrefix + "playMinesweeper [rows] [columns] [mines]`\nMinesweeper\nNumbers: "
+                                                ":one: :two: :three: :four: :five: :six: :seven: :eight:\nEmpty Space: "
+                                                ":poop:\nMine: :bomb:.",
+                    inline=False)
+
+    embed.add_field(name="Number Guessing Game",
+                    value="`" + commandPrefix + "playNumberGuessingGame [a] [b]`\nNumber Guessing Game\nGuess an "
+                                                "integer between a and b.",
+                    inline=False)
+
+
+def createHelpFunnyEmbed(embed):
+    embed.add_field(name="Repeat",
+                    value="`" + commandPrefix + "repeat [text] [count]`\nRepeats a string count times\n`inf` means "
+                                                "until `!stop` is used.",
+                    inline=False)
+
+    embed.add_field(name="Spam Ping",
+                    value="`" + commandPrefix + "spamPing [userID] [count]`\nSpam pings a user.",
+                    inline=False)
+
+    embed.add_field(name="Troll Spam Ping",
+                    value="`" + commandPrefix + "trollSpamPing [userID] [message]`\nA crucial tactic in defeating "
+                                                "America.",
+                    inline=False)
+
+    embed.add_field(name="Add a dumdum",
+                    value="`" + commandPrefix + "addDumdum [userID]`\nAdds a dumdum!",
+                    inline=False)
+
+    embed.add_field(name="Remove a dumdum",
+                    value="`" + commandPrefix + "removeDumdum [userID]`\nRemoves a dumdum!",
+                    inline=False)
+
+
+def createHelpOtherEmbed(embed):
+    embed.add_field(name="Uppercase",
+                    value="`" + commandPrefix + "uppercase [text]`\nConverts a string to uppercase.",
+                    inline=False)
+
+    embed.add_field(name="Lowercase",
+                    value="`" + commandPrefix + "lowercase [text]`\nConverts a string to lowercase.",
+                    inline=False)
+
 
 # Connecting to Discord
-
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 
 # Latency
-
-@bot.command(name='ping', help='pong')
+@bot.command(aliases=["Ping"])
 async def ping(ctx):
     await ctx.send('Pong! {0}'.format(bot.latency))
 
 
 # Stop
-
-@bot.command(name='stop', help='stops the bot')
+@bot.command(aliases=["Stop"])
 async def stop(ctx):
     if ctx.author.id == 428295738011680769:
         await ctx.send('Stopping...')
@@ -45,113 +171,105 @@ async def stop(ctx):
 
 
 # Help Command
+@bot.command(aliases=["Help"])
+async def help(ctx):
+    helpMainEmbed = discord.Embed(title="0️⃣ Commands",
+                                  description="what",
+                                  colour=discord.Color.blue())
+    createHelpMainEmbed(helpMainEmbed)
+    message = await ctx.send(embed=helpMainEmbed)
+    messageInformation[0] = message
+    messageInformation[1] = ctx.author
+    await message.add_reaction('0️⃣')
+    await message.add_reaction('1️⃣')
+    await message.add_reaction('2️⃣')
+    await message.add_reaction('3️⃣')
+    await message.add_reaction('4️⃣')
+    await message.add_reaction('5️⃣')
 
-@bot.group(invoke_without_command=True)
-async def help(ctx, command: str):
-    if command == None:
-        helpList = discord.Embed(title="Help",
-                                 description="Use !help <command> for more info on a command. You can also "
-                                             "use !help <category> for more info on a category.",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Bot", value="help, ping, stop")
-        helpList.add_field(name="Math", value="add, subtract, multiply, divide")
-        helpList.add_field(name="Games", value="playTicTacToe, playHangman, playMinesweeper, playNumberGuessingGame")
-        helpList.add_field(name="Miscellaneous", value="uppercase, lowercase, repeat, spamPing, trollSpamPing")
-    elif command == "help":
-        helpList = discord.Embed(title="Help", description="Prints help message", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!help")
-    elif command == "ping":
-        helpList = discord.Embed(title="Ping", description="Pong", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!ping")
-    elif command == "stop":
-        helpList = discord.Embed(title="Stop", description="Restarts", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!stop")
-    elif command == "add":
-        helpList = discord.Embed(title="Add", description="Adds 2 numbers.", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!add [number] [number]")
-    elif command == "subtract":
-        helpList = discord.Embed(title="Subtract", description="Subtracts 2 numbers.", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!subtract [number] [number]")
-    elif command == "multiply":
-        helpList = discord.Embed(title="Multiply", description="Multiplies 2 numbers.", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!multiply [number] [number]")
-    elif command == "divide":
-        helpList = discord.Embed(title="Divide", description="Divides 2 numbers.", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!divide [number] [number]")
-    elif command == "playTicTacToe":
-        helpList = discord.Embed(title="Tic Tac Toe", description="GAME: Tic Tac Toe for 2 players.",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!playTicTacToe")
-    elif command == "playHangman":
-        helpList = discord.Embed(title="Hangman", description="GAME: Hangman | uses en_US dictionary",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!playHangman")
-    elif command == "playMinesweeper":
-        helpList = discord.Embed(title="Minesweeper", description="GAME: Minesweeper | numbers: :one: :two: :three: "
-                                                                  ":four: :five: :six: :seven: :eight:, empty: :poop:, "
-                                                                  "mine: :bomb:", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!playMinesweeper [rows] [columns] [mines]")
-    elif command == "playNumberGuessingGame":
-        helpList = discord.Embed(title="Number Guessing Game", description="GAME: Guess an integer between a and b.",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!playNumberGuessingGame [a] [b]")
-    elif command == "uppercase":
-        helpList = discord.Embed(title="Uppercase", description="Converts a string to uppercase",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!uppercase [text]")
-    elif command == "lowercase":
-        helpList = discord.Embed(title="Lowercase", description="Converts a string to lowercase",
-                                 color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!lowercase [text]")
-    elif command == "repeat":
-        helpList = discord.Embed(title="Repeat", description="Repeats a string some number of times; \"inf\" means "
-                                                             "until !stop is used", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!lowercase [text]")
-    elif command == "spamPing":
-        helpList = discord.Embed(title="Spam Ping", description="Spam Pings a user", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!spamPing [userID] [count]")
-    elif command == "trollSpamPing":
-        helpList = discord.Embed(title="Troll Spam Ping", description="A crucial tactic part of defeating America and "
-                                                                      "Trump", color=ctx.author.color)
-        helpList.add_field(name="Syntax", value="!trollSpamPing [userID] [message]")
-    else:
-        helpList = discord.Embed(title="Command Not Found", color=ctx.author.color)
-    await ctx.send(embed=helpList)
 
+# Reaction is added
+@bot.event
+async def on_reaction_add(reaction, user: discord.Member = None):
+    if user.id == 718298166931488809:
+        return
+
+    valid = reaction.message == messageInformation[0] and user == messageInformation[1]
+
+    if valid and reaction.emoji == '0️⃣':
+        helpMainEmbed = discord.Embed(title="0️⃣ Commands",
+                                      description="what",
+                                      colour=discord.Color.blue())
+        createHelpMainEmbed(helpMainEmbed)
+        await reaction.message.edit(embed=helpMainEmbed)
+    if valid and reaction.emoji == '1️⃣':
+        helpImportantEmbed = discord.Embed(title="1️⃣ Important Commands",
+                                           description="Useful",
+                                           colour=discord.Color.blue())
+        createHelpImportantEmbed(helpImportantEmbed)
+        await reaction.message.edit(embed=helpImportantEmbed)
+    if valid and reaction.emoji == '2️⃣':
+        helpMathEmbed = discord.Embed(title="2️⃣ Math Commands",
+                                      description="Math",
+                                      colour=discord.Color.blue())
+        createHelpMathEmbed(helpMathEmbed)
+        await reaction.message.edit(embed=helpMathEmbed)
+    if valid and reaction.emoji == '3️⃣':
+        helpGameEmbed = discord.Embed(title="3️⃣ Game Commands",
+                                      description="Games",
+                                      colour=discord.Color.blue())
+        createHelpGameEmbed(helpGameEmbed)
+        await reaction.message.edit(embed=helpGameEmbed)
+    if valid and reaction.emoji == '4️⃣':
+        helpFunnyEmbed = discord.Embed(title="4️⃣ Funny Commands",
+                                       description="Funny",
+                                       colour=discord.Color.blue())
+        createHelpFunnyEmbed(helpFunnyEmbed)
+        await reaction.message.edit(embed=helpFunnyEmbed)
+    if valid and reaction.emoji == '5️⃣':
+        helpOtherEmbed = discord.Embed(title="5️⃣ Other Commands",
+                                       description="Other",
+                                       colour=discord.Color.blue())
+        createHelpOtherEmbed(helpOtherEmbed)
+        await reaction.message.edit(embed=helpOtherEmbed)
+
+    await reaction.message.remove_reaction(reaction.emoji, user)
 
 # Math
 
-
 # Addition
-
-@bot.command(name='add', help='Adds 2 numbers.')
+@bot.command(aliases=['Add', 'sum', 'Sum'])
 async def add(self, a: Decimal, b: Decimal):
     mySum = float(str(a + b))
     await self.send(mySum)
 
 
 # Subtraction
-
-@bot.command(name='subtract', help='Subtracts 2 numbers.')
+@bot.command(aliases=['Subtract', 'minus', 'Minus'])
 async def subtract(self, a: Decimal, b: Decimal):
     diff = float(str(a - b))
     await self.send(diff)
 
 
 # Multiplication
-
-@bot.command(name='multiply', help='Multiplies 2 numbers.')
+@bot.command(aliases=['Multiply', 'times', 'Times'])
 async def multiply(self, a: Decimal, b: Decimal):
     product = float(str(a * b))
     await self.send(product)
 
 
 # Division
-
-@bot.command(name='divide', help='Divides 2 numbers.')
+@bot.command(aliases=['Divide'])
 async def divide(self, a: Decimal, b: Decimal):
     quotient = float(str(a / b))
     await self.send(quotient)
+
+
+# Evaluate
+@bot.command(aliases=['Evaluate'])
+async def evaluate(self, expression: string):
+    answer = eval(expression)
+    await self.send(answer)
 
 
 # Dumdums
@@ -177,7 +295,6 @@ async def removeDumdum(ctx, user_id: int):
 
 
 # Spam Ping
-
 @bot.command(name='spamPing', help='Spam Ping')
 async def spamPing(ctx, user_id, num: int):
     if ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323:
@@ -192,7 +309,6 @@ async def spamPing(ctx, user_id, num: int):
 
 
 # Troll Spam Ping
-
 @bot.command(name='trollSpamPing', help='A crucial tactic part of defeating America and Trump')
 async def trollSpamPing(ctx, user_id, message):
     if user_id == '428295738011680769':
