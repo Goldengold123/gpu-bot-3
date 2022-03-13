@@ -236,7 +236,6 @@ async def on_reaction_add(reaction, user: discord.Member = None):
     await reaction.message.remove_reaction(reaction.emoji, user)
 
 # Math
-
 # Addition
 @bot.command(aliases=['Add', 'sum', 'Sum'])
 async def add(self, a: Decimal, b: Decimal):
@@ -266,14 +265,14 @@ async def divide(self, a: Decimal, b: Decimal):
 
 
 # Evaluate
-@bot.command(aliases=['Evaluate'])
-async def evaluate(self, expression: string):
+@bot.command(aliases=['Evaluate', 'eval'])
+async def evaluate(self, expression):
     answer = eval(expression)
     await self.send(answer)
 
 
 # Dumdums
-@bot.command(name='addDumdum', help='Adds a dumdum!')
+@bot.command(aliases=['AddDumdum', 'adddumdum', 'addDumDum', 'AddDumDum', 'ad', 'AD'])
 async def addDumdum(ctx, user_id: int):
     if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
         dumdums.append(user_id)
@@ -282,7 +281,7 @@ async def addDumdum(ctx, user_id: int):
         await ctx.send("you dont have perms to add a dumdum")
 
 
-@bot.command(name='removeDumdum', help='Removes a dumdum!')
+@bot.command(aliases=['RemoveDumdum', 'removedumdum', 'removeDumDum', 'RemoveDumDum', 'rd', 'RD'])
 async def removeDumdum(ctx, user_id: int):
     if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
         if user_id in dumdums:
@@ -295,7 +294,7 @@ async def removeDumdum(ctx, user_id: int):
 
 
 # Spam Ping
-@bot.command(name='spamPing', help='Spam Ping')
+@bot.command(aliases=['spamping', 'SpamPing', 'sp', 'SP'])
 async def spamPing(ctx, user_id, num: int):
     if ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323:
         count = 0
@@ -309,7 +308,7 @@ async def spamPing(ctx, user_id, num: int):
 
 
 # Troll Spam Ping
-@bot.command(name='trollSpamPing', help='A crucial tactic part of defeating America and Trump')
+@bot.command(aliases=['trollspamping', 'TrollSpamPing', 'tsp', 'TSP'])
 async def trollSpamPing(ctx, user_id, message):
     if user_id == '428295738011680769':
         await ctx.send("Haha I'm immune!")
@@ -323,8 +322,7 @@ async def trollSpamPing(ctx, user_id, message):
 
 
 # Repeat
-
-@bot.command(name='repeat', help='repeats user')
+@bot.command(aliases=['Repeat'])
 async def repeat(ctx, msg, count):
     if count == 'inf' and (
             ctx.author.id == 428295738011680769 or ctx.author.id == 266260596473856000 or ctx.author.id == 322493122598797323):
@@ -341,16 +339,14 @@ async def repeat(ctx, msg, count):
 
 
 # Uppercase
-
-@bot.command(name='uppercase', help='converts a string to uppercase')
+@bot.command(aliases=['Uppercase'])
 async def uppercase(ctx, *, msg):
     upper = msg.upper()
     await ctx.send(upper)
 
 
 # Lowercase
-
-@bot.command(name='lowercase', help='converts a string to lowercase')
+@bot.command(aliases=['Lowercase'])
 async def lowercase(ctx, *, msg):
     lower = msg.lower()
     await ctx.send(lower)
@@ -358,13 +354,13 @@ async def lowercase(ctx, *, msg):
 
 # Number Game
 
-@bot.command(name='playNumberGuessing', help='GAME: Guess an integer between a and b.')
+@bot.command(aliases=['playnumberguessing', 'numberguessing', 'NumberGuessing', 'numberGuessing', 'numberguess',
+                      'NumberGuess', 'numberGuess', 'PlayNumberGuessing', 'playnumberguess', 'PlayNumberGuess',
+                      'playNumberGuess'])
 async def playNumberGuessing(ctx, a: int, b: int):
     num = random.randint(a, b)
     count = 0
     guess = 1.2
-    await ctx.send('Player please send a message.')
-    msg = await bot.wait_for("message")
     user = ctx.author
     await ctx.send('Guess an integer between ' + str(a) + ' and ' + str(b) + '.')
     while guess != num:
@@ -384,7 +380,7 @@ async def playNumberGuessing(ctx, a: int, b: int):
 
 # Tic Tac Toe
 
-@bot.command(name='playTicTacToe', help='GAME: Tic Tac Toe for 2 players.')
+@bot.command(aliases=['PlayTicTacToe', 'playtictactoe', 'tictactoe', 'TicTacToe', 'ticTacToe'])
 async def playTicTacToe(ctx):
     if ctx.author.id == 322493122598797323:
         await ctx.send('No.')
@@ -483,7 +479,7 @@ async def playTicTacToe(ctx):
 
 # Hangman
 
-@bot.command(name='playHangman', help='GAME: hangman, uses en_US dictionary')
+@bot.command(aliases=['PlayHangman', 'hangman', 'Hangman'])
 async def playHangman(ctx):
     await ctx.send('Word Chooser, please send a message.')
     msg1 = await bot.wait_for('message')
@@ -617,7 +613,7 @@ async def playHangman(ctx):
 
 # Minesweeper
 
-@bot.command(name='playMinesweeper', help='GAME: minesweeper, numbers, poo=empty, bomb=mine')
+@bot.command(aliases=['PlayMinesweeper', 'minesweeper', 'Minesweeper'])
 async def playMinesweeper(ctx, myRows: int, myColumns: int, myMines: int):
     if myRows <= 0:
         await ctx.send("WARNING! Row count must be at least 1...setting to default 10.")
@@ -703,7 +699,7 @@ Third instance and onward will result in a **Kick** of *twenty-four hours*"""
 ]
 
 
-@bot.command()
+@bot.command(aliases=['Rule'])
 async def rule(ctx, num: int):
     await ctx.send(rules[int(num)])
 
