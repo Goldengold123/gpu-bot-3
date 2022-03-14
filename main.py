@@ -32,7 +32,10 @@ else:
     from credentials import TOKEN
 
 # Command Prefix
-from credentials import commandPrefix
+if os.environ.get("DISCORD_BOT_TOKEN"):
+    commandPrefix = os.environ.get("commandPrefix")
+else:
+    from credentials import commandPrefix
 
 # Client
 intents = discord.Intents.default()
