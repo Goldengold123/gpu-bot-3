@@ -1,15 +1,29 @@
+import os
+import discord
+from discord.ext import commands
 import asyncio
 import random
 import string
-import nltk
+from decimal import *
 import minesweeper
-import discord
-from discord.ext import commands
-import os
+
+import nltk
+from nltk.corpus import words
+
+from createHelpEmbeds import createHelpMainEmbed
+from createHelpEmbeds import createHelpImportantEmbed
+from createHelpEmbeds import createHelpMathEmbed
+from createHelpEmbeds import createHelpGameEmbed
+from createHelpEmbeds import createHelpFunnyEmbed
+from createHelpEmbeds import createHelpOtherEmbed
+
+
+from ticTacToe import drawBoard
+from ticTacToe import win
+from ticTacToe import draw
+from ticTacToe import check
 
 nltk.download('words')
-from nltk.corpus import words
-from decimal import *
 
 # Token
 if os.environ.get("DISCORD_BOT_TOKEN"):
@@ -18,7 +32,7 @@ else:
     from credentials import TOKEN
 
 # Command Prefix
-commandPrefix = '!'
+from credentials import commandPrefix
 
 # Client
 intents = discord.Intents.default()
@@ -30,124 +44,14 @@ bot.remove_command("help")
 dumdums = [397105296327049216, 296396903195607040]
 
 # Variables
-messageInformation = [0, 0]
+# Help
+helpMessageInformation = [0, 0]
 
-
-def createHelpMainEmbed(embed):
-    embed.add_field(name=":one: Important",
-                    value="Important commands.",
-                    inline=False)
-
-    embed.add_field(name=":two: Math",
-                    value="Math commands.",
-                    inline=False)
-
-    embed.add_field(name=":three: Games",
-                    value="Game commands.",
-                    inline=False)
-
-    embed.add_field(name=":four: Funny",
-                    value="funny",
-                    inline=False)
-
-    embed.add_field(name=":five: Other",
-                    value="Miscellaneous commands.",
-                    inline=False)
-
-
-def createHelpImportantEmbed(embed):
-    embed.add_field(name="Help",
-                    value="`" + commandPrefix + "help` Helps you.",
-                    inline=False)
-
-    embed.add_field(name="Ping",
-                    value="`" + commandPrefix + "ping` Pong.",
-                    inline=False)
-
-    embed.add_field(name="Stop",
-                    value="`" + commandPrefix + "stop` Stops if you are 428295738011680769.",
-                    inline=False)
-
-
-def createHelpMathEmbed(embed):
-    embed.add_field(name="Add",
-                    value="`" + commandPrefix + "add [number1] [number2]`\nAdds 2 numbers.\nReturns `number1 + "
-                                                "number2`.",
-                    inline=False)
-
-    embed.add_field(name="Subtract",
-                    value="`" + commandPrefix + "subtract [number1] [number2]`\nSubtracts 2 numbers.\nReturns "
-                                                "`number1 - number2`.",
-                    inline=False)
-
-    embed.add_field(name="Multiply",
-                    value="`" + commandPrefix + "multiply [number1] [number2]`\nMultiplies 2 numbers.\nReturns "
-                                                "`number1 × number2`.",
-                    inline=False)
-
-    embed.add_field(name="Divide",
-                    value="`" + commandPrefix + "divide [number1] [number2]`\nDivides 2 numbers.\nReturns `number1 ÷ "
-                                                "number2`.",
-                    inline=False)
-
-    embed.add_field(name="Evaluate",
-                    value="`" + commandPrefix + "evaluate [expression]`\nEvaluates an expression.",
-                    inline=False)
-
-
-def createHelpGameEmbed(embed):
-    embed.add_field(name="Tic Tac Toe",
-                    value="`" + commandPrefix + "playTicTacToe`\nTic Tac Toe for 2 players.",
-                    inline=False)
-
-    embed.add_field(name="Hangman",
-                    value="`" + commandPrefix + "playHangman`\nHangman using an en_US dictionary.",
-                    inline=False)
-
-    embed.add_field(name="Minesweeper",
-                    value="`" + commandPrefix + "playMinesweeper [rows] [columns] [mines]`\nMinesweeper\nNumbers: "
-                                                ":one: :two: :three: :four: :five: :six: :seven: :eight:\nEmpty Space: "
-                                                ":poop:\nMine: :bomb:.",
-                    inline=False)
-
-    embed.add_field(name="Number Guessing Game",
-                    value="`" + commandPrefix + "playNumberGuessingGame [a] [b]`\nNumber Guessing Game\nGuess an "
-                                                "integer between a and b.",
-                    inline=False)
-
-
-def createHelpFunnyEmbed(embed):
-    embed.add_field(name="Repeat",
-                    value="`" + commandPrefix + "repeat [text] [count]`\nRepeats a string count times\n`inf` means "
-                                                "until `!stop` is used.",
-                    inline=False)
-
-    embed.add_field(name="Spam Ping",
-                    value="`" + commandPrefix + "spamPing [userID] [count]`\nSpam pings a user.",
-                    inline=False)
-
-    embed.add_field(name="Troll Spam Ping",
-                    value="`" + commandPrefix + "trollSpamPing [userID] [message]`\nA crucial tactic in defeating "
-                                                "America.",
-                    inline=False)
-
-    embed.add_field(name="Add a dumdum",
-                    value="`" + commandPrefix + "addDumdum [userID]`\nAdds a dumdum!",
-                    inline=False)
-
-    embed.add_field(name="Remove a dumdum",
-                    value="`" + commandPrefix + "removeDumdum [userID]`\nRemoves a dumdum!",
-                    inline=False)
-
-
-def createHelpOtherEmbed(embed):
-    embed.add_field(name="Uppercase",
-                    value="`" + commandPrefix + "uppercase [text]`\nConverts a string to uppercase.",
-                    inline=False)
-
-    embed.add_field(name="Lowercase",
-                    value="`" + commandPrefix + "lowercase [text]`\nConverts a string to lowercase.",
-                    inline=False)
+# Tic Tac Toe
+ticTacToeMessageInformation = [0]
+ticTacToeCurrentPlayer = 1
+ticTacToePlayers = [" ", " "]
+emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮']
 
 
 # Connecting to Discord
@@ -178,62 +82,14 @@ async def help(ctx):
                                   colour=discord.Color.red())
     createHelpMainEmbed(helpMainEmbed)
     message = await ctx.send(embed=helpMainEmbed)
-    messageInformation[0] = message
-    messageInformation[1] = ctx.author
+    helpMessageInformation[0] = message
+    helpMessageInformation[1] = ctx.author
     await message.add_reaction('0️⃣')
     await message.add_reaction('1️⃣')
     await message.add_reaction('2️⃣')
     await message.add_reaction('3️⃣')
     await message.add_reaction('4️⃣')
     await message.add_reaction('5️⃣')
-
-
-# Reaction is added
-@bot.event
-async def on_reaction_add(reaction, user: discord.Member = None):
-    if user.id == 718298166931488809:
-        return
-
-    valid = reaction.message == messageInformation[0] and user == messageInformation[1]
-
-    if valid and reaction.emoji == '0️⃣':
-        helpMainEmbed = discord.Embed(title="0️⃣ Commands",
-                                      description="what",
-                                      colour=discord.Color.red())
-        createHelpMainEmbed(helpMainEmbed)
-        await reaction.message.edit(embed=helpMainEmbed)
-    if valid and reaction.emoji == '1️⃣':
-        helpImportantEmbed = discord.Embed(title="1️⃣ Important Commands",
-                                           description="Useful",
-                                           colour=discord.Color.orange())
-        createHelpImportantEmbed(helpImportantEmbed)
-        await reaction.message.edit(embed=helpImportantEmbed)
-    if valid and reaction.emoji == '2️⃣':
-        helpMathEmbed = discord.Embed(title="2️⃣ Math Commands",
-                                      description="Math",
-                                      colour=discord.Color.gold())
-        createHelpMathEmbed(helpMathEmbed)
-        await reaction.message.edit(embed=helpMathEmbed)
-    if valid and reaction.emoji == '3️⃣':
-        helpGameEmbed = discord.Embed(title="3️⃣ Game Commands",
-                                      description="Games",
-                                      colour=discord.Color.green())
-        createHelpGameEmbed(helpGameEmbed)
-        await reaction.message.edit(embed=helpGameEmbed)
-    if valid and reaction.emoji == '4️⃣':
-        helpFunnyEmbed = discord.Embed(title="4️⃣ Funny Commands",
-                                       description="Funny",
-                                       colour=discord.Color.blue())
-        createHelpFunnyEmbed(helpFunnyEmbed)
-        await reaction.message.edit(embed=helpFunnyEmbed)
-    if valid and reaction.emoji == '5️⃣':
-        helpOtherEmbed = discord.Embed(title="5️⃣ Other Commands",
-                                       description="Other",
-                                       colour=discord.Color.purple())
-        createHelpOtherEmbed(helpOtherEmbed)
-        await reaction.message.edit(embed=helpOtherEmbed)
-
-    await reaction.message.remove_reaction(reaction.emoji, user)
 
 
 # Math
@@ -397,103 +253,27 @@ async def playNumberGuessing(ctx, a: int, b: int):
 
 @bot.command(aliases=['PlayTicTacToe', 'playtictactoe', 'tictactoe', 'TicTacToe', 'ticTacToe'])
 async def playTicTacToe(ctx):
+    global ticTacToeMessageInformation, ticTacToeCurrentPlayer, ticTacToeMessageInformation, ticTacToePlayers, emojis
     if ctx.author.id in dumdums:
         await ctx.send('No.')
         return
-    text = "Play Tic Tac Toe\n"
-    msg = await ctx.send(text)
-    await msg.edit(content=text+"Player 1 please send a message.")
-    msg1 = await bot.wait_for('message')
-    user1 = msg1.author
-    await msg1.delete()
-    await msg.edit(content=text+"Player 2 please send a message.")
-    msg2 = await bot.wait_for('message')
-    user2 = msg2.author
-    letters = {
-        'A': '🇦',
-        'B': '🇧',
-        'C': '🇨',
-        'D': '🇩',
-        'E': '🇪',
-        'F': '🇫',
-        'G': '🇬',
-        'H': '🇭',
-        'I': '🇮'
-    }
-    filled = []
-    possibleMoves = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
 
-    def drawBoard():
-        horizontal = '--------------------------------------'
-        mainLine = '⬛⬛⬛ | ⬛⬛⬛ | ⬛⬛⬛'
-        top = '⬛{0}⬛ | ⬛{1}⬛ | ⬛{2}⬛'.format(letters['A'], letters['B'], letters['C'])
-        middle = '⬛{0}⬛ | ⬛{1}⬛ | ⬛{2}⬛'.format(letters['D'], letters['E'], letters['F'])
-        bottom = '⬛{0}⬛ | ⬛{1}⬛ | ⬛{2}⬛'.format(letters['G'], letters['H'], letters['I'])
-        board = '{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n{8}\n{9}\n{10}'.format(mainLine, top, mainLine, horizontal,
-                                                                                mainLine, middle, mainLine,
-                                                                                horizontal,
-                                                                                mainLine, bottom, mainLine)
-        return board
+    ticTacToeMessageInformation = [0]
+    ticTacToeCurrentPlayer = 1
+    ticTacToePlayers = [" ", " "]
+    emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮']
 
-    def win(myBoard, piece):
-        if myBoard['A'] == myBoard['B'] == myBoard['C'] == piece:
-            return True
-        elif myBoard['D'] == myBoard['E'] == myBoard['F'] == piece:
-            return True
-        elif myBoard['G'] == myBoard['H'] == myBoard['I'] == piece:
-            return True
-        elif myBoard['A'] == myBoard['D'] == myBoard['G'] == piece:
-            return True
-        elif myBoard['B'] == myBoard['E'] == myBoard['H'] == piece:
-            return True
-        elif myBoard['C'] == myBoard['F'] == myBoard['I'] == piece:
-            return True
-        elif myBoard['A'] == myBoard['E'] == myBoard['I'] == piece:
-            return True
-        elif myBoard['C'] == myBoard['E'] == myBoard['G'] == piece:
-            return True
-        else:
-            return False
+    embed = discord.Embed(title="Tic Tac Toe",
+                          description="Player 1: `" + str(ticTacToePlayers[0]) + "`\nPlayer2: `" + str(ticTacToePlayers[1]) + "`",
+                          colour=discord.Color.green())
+    embed.add_field(name="Player 1", value="React with ❌.", inline=False)
+    embed.add_field(name="Player 2", value="React with ⭕.", inline=False)
 
-    def draw(myBoard, myFilled):
-        return (not (win(myBoard, '❌'))) and (not (win(myBoard, '⭕'))) and len(myFilled) == 9
+    msg = await ctx.send(embed=embed)
 
-    def check1(m):
-        return (m.author == user1 and
-                not (m.content.upper() in filled) and
-                m.content.upper() in possibleMoves)
-
-    def check2(m):
-        return (m.author == user2 and
-                not (m.content.upper() in filled) and
-                m.content.upper() in possibleMoves)
-
-    while not (draw(letters, filled)) and not (win(letters, '❌')) and not (win(letters, '⭕')):
-
-        await msg.edit(content=text+drawBoard()+"\nPlayer 1, send the letter of where you would like to go.")
-
-        move1 = await bot.wait_for('message', check=check1)
-        letters[move1.content.upper()] = '❌'
-        filled.append(move1.content.upper())
-        await move1.delete()
-
-        if win(letters, '❌'):
-            await msg.edit(content=text+"Congrats! Player 1 has won!\n"+drawBoard())
-            return
-        if draw(letters, filled):
-            await msg.edit(content=text+"The 2 players have drawn! HAHA, that means I win!\n"+drawBoard())
-            return
-
-        await msg.edit(content=text+drawBoard()+"\nPlayer 2, send the letter of where you would like to go.")
-
-        move2 = await bot.wait_for('message', check=check2)
-        letters[move2.content.upper()] = '⭕'
-        filled.append(move2.content.upper())
-        await move2.delete()
-
-        if win(letters, '⭕'):
-            await ctx.edit(content=text+"Congrats! Player 2 has won!'\n"+drawBoard())
-            return
+    ticTacToeMessageInformation[0] = msg
+    await msg.add_reaction('❌')
+    await msg.add_reaction('⭕')
 
 
 # Hangman
@@ -721,6 +501,131 @@ Third instance and onward will result in a **Kick** of *twenty-four hours*"""
 @bot.command(aliases=['Rule'])
 async def rule(ctx, num: int):
     await ctx.send(rules[int(num)])
+
+
+# Reaction is added
+@bot.event
+async def on_reaction_add(reaction, user: discord.Member = None):
+    global ticTacToeCurrentPlayer
+    if user.id == 718298166931488809:
+        return
+
+    # Reaction is on Help message
+    needHelp = reaction.message == helpMessageInformation[0] and user == helpMessageInformation[1]
+    if needHelp:
+        if reaction.emoji == '0️⃣':
+            helpMainEmbed = discord.Embed(title="0️⃣ Commands",
+                                          description="what",
+                                          colour=discord.Color.red())
+            createHelpMainEmbed(helpMainEmbed)
+            await reaction.message.edit(embed=helpMainEmbed)
+        if reaction.emoji == '1️⃣':
+            helpImportantEmbed = discord.Embed(title="1️⃣ Important Commands",
+                                               description="Useful",
+                                               colour=discord.Color.orange())
+            createHelpImportantEmbed(helpImportantEmbed)
+            await reaction.message.edit(embed=helpImportantEmbed)
+        if reaction.emoji == '2️⃣':
+            helpMathEmbed = discord.Embed(title="2️⃣ Math Commands",
+                                          description="Math",
+                                          colour=discord.Color.gold())
+            createHelpMathEmbed(helpMathEmbed)
+            await reaction.message.edit(embed=helpMathEmbed)
+        if reaction.emoji == '3️⃣':
+            helpGameEmbed = discord.Embed(title="3️⃣ Game Commands",
+                                          description="Games",
+                                          colour=discord.Color.green())
+            createHelpGameEmbed(helpGameEmbed)
+            await reaction.message.edit(embed=helpGameEmbed)
+        if reaction.emoji == '4️⃣':
+            helpFunnyEmbed = discord.Embed(title="4️⃣ Funny Commands",
+                                           description="Funny",
+                                           colour=discord.Color.blue())
+            createHelpFunnyEmbed(helpFunnyEmbed)
+            await reaction.message.edit(embed=helpFunnyEmbed)
+        if reaction.emoji == '5️⃣':
+            helpOtherEmbed = discord.Embed(title="5️⃣ Other Commands",
+                                           description="Other",
+                                           colour=discord.Color.purple())
+            createHelpOtherEmbed(helpOtherEmbed)
+            await reaction.message.edit(embed=helpOtherEmbed)
+
+    # Reaction is on Tic Tac Toe message
+    playingTicTacToe = reaction.message == ticTacToeMessageInformation[0]
+    if playingTicTacToe:
+        # Choose players
+        if str(ticTacToePlayers[0]) == " " or str(ticTacToePlayers[1]) == " ":
+            if reaction.emoji == '❌':
+                ticTacToePlayers[0] = user
+                await reaction.message.clear_reaction(reaction.emoji)
+            if reaction.emoji == '⭕':
+                ticTacToePlayers[1] = user
+                await reaction.message.clear_reaction(reaction.emoji)
+
+        # Update Embed
+        embed = discord.Embed(title="Tic Tac Toe",
+                              description="Player 1: `" + str(ticTacToePlayers[0]) + "`\nPlayer2: `" + str(ticTacToePlayers[
+                                  1]) + "`",
+                              colour=discord.Color.green())
+        embed.clear_fields()
+
+        if str(ticTacToePlayers[0]) == " ":
+            embed.add_field(name="Player 1", value="React with ❌.", inline=False)
+        if str(ticTacToePlayers[1]) == " ":
+            embed.add_field(name="Player 2", value="React with ⭕.", inline=False)
+
+        if str(ticTacToePlayers[0]) != " " and str(ticTacToePlayers[1]) != " ":
+            embed.add_field(name="Board", value=drawBoard(emojis), inline=False)
+
+            if not (draw(emojis) or win(emojis, '❌') or win(emojis, '⭕')):
+                embed.add_field(name="Player " + str(ticTacToeCurrentPlayer) + ": `" + str(ticTacToePlayers[ticTacToeCurrentPlayer - 1]) + "`",
+                                value="React with the letter of where you would like to go.",
+                                inline=False)
+            if not win(emojis, '❌') and not win(emojis, '⭕') and not draw(emojis):
+                for emoji in emojis:
+                    if emoji != '❌' and emoji != '⭕':
+                        await reaction.message.add_reaction(emoji)
+            else:
+                for emoji in emojis:
+                    await reaction.message.clear_reaction(emoji)
+
+        await reaction.message.edit(embed=embed)
+
+        # Play game
+        if ((str(ticTacToePlayers[0]) != " " and str(ticTacToePlayers[1]) != " ")
+                and (not (draw(emojis) or win(emojis, '❌') or win(emojis, '⭕')))
+                and check(reaction.emoji, emojis)) and user == ticTacToePlayers[ticTacToeCurrentPlayer-1]\
+                and reaction.emoji != '❌' and reaction.emoji != '⭕':
+            if ticTacToeCurrentPlayer == 1:
+                emojis[emojis.index(reaction.emoji)] = '❌'
+            else:
+                emojis[emojis.index(reaction.emoji)] = '⭕'
+
+            embed.clear_fields()
+            await reaction.message.clear_reaction(reaction.emoji)
+
+            ticTacToeCurrentPlayer %= 2
+            ticTacToeCurrentPlayer += 1
+            embed.add_field(name="Board", value=drawBoard(emojis), inline=False)
+            if win(emojis, '❌'):
+                embed.add_field(name="Player 1: `" + str(ticTacToePlayers[ticTacToeCurrentPlayer - 1]) + "`",
+                                value="Congrats! Player 1 has won!",
+                                inline=False)
+            elif win(emojis, '⭕'):
+                embed.add_field(name="Player 2: `" + str(ticTacToePlayers[ticTacToeCurrentPlayer - 1]) + "`",
+                                value="Congrats! Player 2 has won!",
+                                inline=False)
+            elif draw(emojis):
+                embed.add_field(name="Draw",
+                                value="The 2 players have drawn! HAHA, that means I win!",
+                                inline=False)
+            else:
+                embed.add_field(name="Player " + str(ticTacToeCurrentPlayer) + ": `" + str(ticTacToePlayers[ticTacToeCurrentPlayer - 1]) + "`",
+                                value="React with the letter of where you would like to go.",
+                                inline=False)
+
+        await reaction.message.edit(embed=embed)
+    await reaction.message.remove_reaction(reaction.emoji, user)
 
 
 bot.run(TOKEN)
