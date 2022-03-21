@@ -17,6 +17,7 @@ from createHelpEmbeds import createHelpGameEmbed
 from createHelpEmbeds import createHelpFunnyEmbed
 from createHelpEmbeds import createHelpOtherEmbed
 
+from createEmbed import createEmbed
 
 from ticTacToe import drawBoard
 from ticTacToe import win
@@ -43,6 +44,9 @@ intents.reactions = True
 bot = commands.Bot(command_prefix=commandPrefix, intents=intents)
 bot.remove_command("help")
 
+# Non dumdums
+nonDumdums = [428295738011680769, 266260596473856000]
+
 # Dumdums
 dumdums = [397105296327049216, 296396903195607040]
 
@@ -56,6 +60,9 @@ ticTacToeCurrentPlayer = 1
 ticTacToePlayers = [" ", " "]
 emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮']
 
+# Math Operations
+operations = ["Add", "Subtract", "Multiply", "Divide", "Evaluate"]
+equations = ["1 + 2 = 3", "3 - 2 = 1", "2 × 3 = 6", "6 ÷ 3 = 2", "1 + 2 × 3 = 7"]
 
 # Connecting to Discord
 @bot.event
@@ -98,47 +105,73 @@ async def help(ctx):
 # Math
 # Addition
 @bot.command(aliases=['Add', 'sum', 'Sum'])
-async def add(self, a: Decimal, b: Decimal):
-    mySum = float(str(a + b))
-    await self.send(mySum)
+async def add(ctx, a: Decimal, b: Decimal):
+    operations.pop(0)
+    operations.append("Add")
+    equations.pop(0)
+    equations.append(str(a) + " + " + str(b) + " = " + str(a+b))
+    await ctx.send(embed=createEmbed("Math Operations", "", discord.Color.gold(), operations, equations, False))
 
 
 # Subtraction
 @bot.command(aliases=['Subtract', 'minus', 'Minus'])
-async def subtract(self, a: Decimal, b: Decimal):
-    diff = float(str(a - b))
-    await self.send(diff)
+async def subtract(ctx, a: Decimal, b: Decimal):
+    operations.pop(0)
+    operations.append("Subtract")
+    equations.pop(0)
+    equations.append(str(a) + " - " + str(b) + " = " + str(a - b))
+    await ctx.send(embed=createEmbed("Math Operations", "", discord.Color.gold(), operations, equations, False))
 
 
 # Multiplication
 @bot.command(aliases=['Multiply', 'times', 'Times'])
-async def multiply(self, a: Decimal, b: Decimal):
-    product = float(str(a * b))
-    await self.send(product)
+async def multiply(ctx, a: Decimal, b: Decimal):
+    operations.pop(0)
+    operations.append("Multiply")
+    equations.pop(0)
+    equations.append(str(a) + " × " + str(b) + " = " + str(a * b))
+    await ctx.send(embed=createEmbed("Math Operations", "", discord.Color.gold(), operations, equations, False))
 
 
 # Division
 @bot.command(aliases=['Divide'])
-async def divide(self, a: Decimal, b: Decimal):
-    quotient = float(str(a / b))
-    await self.send(quotient)
+async def divide(ctx, a: Decimal, b: Decimal):
+    try:
+        operations.pop(0)
+        operations.append("Divide")
+        equations.pop(0)
+        equations.append(str(a) + " ÷ " + str(b) + " = " + str(a / b))
+        await ctx.send(embed=createEmbed("Math Operations", "", discord.Color.gold(), operations, equations, False))
+    except ZeroDivisionError:
+        await ctx.send("Cannot divide by 0.")
 
 
 # Evaluate
 @bot.command(aliases=['Evaluate', 'eval'])
-async def evaluate(self, expression):
-    answer = eval(expression)
-    await self.send(answer)
+async def evaluate(ctx, expression):
+    try:
+        operations.pop(0)
+        operations.append("Evaluate")
+        equations.pop(0)
+        equations.append(expression + " = " + str(eval(expression)))
+        await ctx.send(embed=createEmbed("Math Operations", "", discord.Color.gold(), operations, equations, False))
+    except ZeroDivisionError:
+        await ctx.send("Cannot divide by 0.")
 
 
 # Dumdums
 @bot.command(aliases=['AddDumdum', 'adddumdum', 'addDumDum', 'AddDumDum', 'ad', 'AD'])
 async def addDumdum(ctx, user_id: int):
-    if ctx.author.id == 266260596473856000 or ctx.author.id == 428295738011680769:
+    if ctx.author.id in nonDumdums:
         dumdums.append(user_id)
-        await ctx.send("Added dumdum", user_id)
+        await ctx.send(createEmbed(
+            "Dumdums",
+            "",
+            discord.Color.blue(),
+            ["Current dumdums", "Added dumdum"],
+            [", ".join(f"<@" + str(dumdum) + "> " for dumdum in dumdums), f"<@" + str(user_id) + "> "], False))
     else:
-        await ctx.send("you dont have perms to add a dumdum")
+        await ctx.send("No.")
 
 
 @bot.command(aliases=['RemoveDumdum', 'removedumdum', 'removeDumDum', 'RemoveDumDum', 'rd', 'RD'])
@@ -150,7 +183,7 @@ async def removeDumdum(ctx, user_id: int):
         else:
             await ctx.send(user_id, "is not a dumdum")
     else:
-        await ctx.send("you dont have perms to remove a dumdum")
+        await ctx.send("No.")
 
 
 # Spam Ping
